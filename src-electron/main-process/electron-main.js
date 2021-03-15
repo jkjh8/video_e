@@ -1,5 +1,9 @@
 import { app, BrowserWindow, nativeTheme, ipcMain } from 'electron'
-import path from 'path'
+import webServer from './api/web/web'
+
+webServer.listen(12300, () => {
+  console.info('Listening on 12300')
+})
 
 try {
   if (process.platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
@@ -7,14 +11,9 @@ try {
   }
 } catch (_) { }
 
-/**
- * Set `__statics` path to static files in production;
- * The reason we are setting it here is that the path needs to be evaluated at runtime
- */
 if (process.env.PROD) {
   global.__statics = __dirname
 }
-
 let mainWindow
 let controlWindow
 
@@ -27,12 +26,14 @@ function createWindow () {
       nodeIntegration: true,
       enableRemoteModule: true,
       contextIsolation: false,
-      nodeIntegrationInWorker: true
+      nodeIntegrationInWorker: true,
+      webSecurity: false
     }
   })
   mainWindow.loadURL(process.env.APP_URL)
   mainWindow.on('closed', () => {
     mainWindow = null
+    app.quit()
   })
 
   controlWindow = new BrowserWindow({
@@ -41,13 +42,23 @@ function createWindow () {
     useContentSize: true,
     webPreferences: {
       nodeIntegration: process.env.QUASAR_NODE_INTEGRATION,
-      nodeIntegrationInWorker: process.env.QUASAR_NODE_INTEGRATION
+      nodeIntegrationInWorker: process.env.QUASAR_NODE_INTEGRATION,
+      enableRemoteModule: true,
+      contextIsolation: false,
+      webSecurity: false
     }
   })
   controlWindow.loadURL(process.env.APP_URL)
   controlWindow.on('close', (e) => {
-    e.preventDefault()
-    controlWindow.hide()
+    if (mainWindow) {
+      e.preventDefault()
+      controlWindow.hide()
+    } else {
+      controlWindow = null
+    }
+  })
+  controlWindow.on('closed', () => {
+    controlWindow = null
   })
 }
 
