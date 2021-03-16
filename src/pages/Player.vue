@@ -43,13 +43,18 @@
 
 <script>
 // import { ipcRenderer } from 'electron'
-import { sendMsg } from '../mixins/sendMsg'
+import { playerfunc } from '../mixins/playerFunc'
 
 export default {
-  mixins: [sendMsg],
+  mixins: [playerfunc],
+  computed: {
+    player () {
+      return this.$refs.mediaplayer
+    }
+  },
   data () {
     return {
-      status: null,
+      status: {},
       sources: [],
       rtData: {
         control: null,

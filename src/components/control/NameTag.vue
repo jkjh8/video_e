@@ -7,7 +7,7 @@
         <q-img
           style="height: 70px; width: 122px"
           :ratio="16/9"
-          :src="thumbnail"
+          :src="status.thumbnail ? 'status.thumbnail':'logo_sq.png'"
         />
       </span>
       <span class="text-black" v-if="status && status.file">
@@ -32,13 +32,6 @@ export default {
   computed: {
     filePath: function () {
       return path.parse(this.status.file.file)
-    },
-    thumbnail: function () {
-      if (this.status.thumbnail) {
-        return this.status.thumbnail
-      } else {
-        return 'logo_sq.png'
-      }
     }
   },
   mounted () {

@@ -1,6 +1,6 @@
 import { BrowserWindow } from 'electron'
 
-export const sendStatus = function (addr, data) {
+export const sendMsg = function (addr, data) {
   const wins = BrowserWindow.getAllWindows()
   wins.forEach(win => {
     if (win) {

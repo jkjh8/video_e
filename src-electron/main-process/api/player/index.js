@@ -3,9 +3,13 @@ const func = require('../function')
 
 ipcMain.on('status', (event, data) => {
   status[data.addr] = data.value
-  func.sendStatus('status', status)
+  func.sendMsg('status', status)
 })
 
 ipcMain.on('sync', (event) => {
   event.returnValue = status
+})
+
+ipcMain.on('control', (event, data) => {
+  func.sendMsg('control', data)
 })

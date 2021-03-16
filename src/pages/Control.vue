@@ -8,16 +8,16 @@
 </template>
 
 <script>
-import { sendMsg } from '../mixins/sendMsg'
+import { playerfunc } from '../mixins/playerFunc'
 import ControlPanel from '../components/ControlPanel'
 
 export default {
   name: 'Control',
-  mixins: [sendMsg],
+  mixins: [playerfunc],
   components: { ControlPanel },
   data () {
     return {
-      status: null
+      status: {}
     }
   },
   created () {

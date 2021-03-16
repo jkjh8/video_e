@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron'
 
-export const sendMsg = {
+export const playerfunc = {
   methods: {
     sendControl (addr, data) {
       ipcRenderer.send('control', { addr: addr, value: data })

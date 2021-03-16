@@ -14,14 +14,15 @@
 
 <script>
 import { msToHms } from '../../mixins/msToHMS'
+import { playerfunc } from '../../mixins/playerFunc'
 
 export default {
   name: 'slider',
-  mixins: [msToHms],
+  mixins: [msToHms, playerfunc],
   props: ['status'],
   methods: {
     changeTime (time) {
-      console.log(time)
+      this.sendControl('time', time)
     }
   }
 }
