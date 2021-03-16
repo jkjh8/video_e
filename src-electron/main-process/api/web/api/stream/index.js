@@ -28,4 +28,4 @@ module.exports.stream = function (req, res, next) {
     res.writeHead(200, head)
     fs.createReadStream(filePath).pipe(res)
   }
-} 
+}

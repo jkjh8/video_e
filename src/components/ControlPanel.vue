@@ -1,6 +1,6 @@
 <template>
-  <q-card>
-    <q-card-section>
+  <q-card flat square>
+    <q-card-section class="q-my-none q-py-none">
       <Slider :status="status"></Slider>
     </q-card-section>
     <q-list>

@@ -1,9 +1,9 @@
 <template>
   <q-page class="flex flex-center">
     <q-img
-      alt="Quasar logo"
+      alt="logo"
       style="width: 100px;"
-      src="~assets/logo.png"
+      src="logo_100.png"
     />
   </q-page>
 </template>

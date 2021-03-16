@@ -33,7 +33,7 @@
         >
           <q-img
             style="max-width: 100px"
-            src="~assets/logo.png"
+            src="logo_100.png"
           />
         </div>
       </template>
