@@ -9,13 +9,12 @@
 </template>
 
 <script>
-import { remote, ipcRenderer } from 'electron'
+import { remote } from 'electron'
 export default {
   name: 'PageIndex',
   created () {
     const win = remote.getCurrentWindow()
-    const route = ipcRenderer.sendSync('getWindow', win.id)
-    if (route === 1) {
+    if (win.id === 1) {
       this.$router.push('player')
     } else {
       this.$router.push('control')

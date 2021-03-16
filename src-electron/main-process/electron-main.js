@@ -1,8 +1,19 @@
-import { app, BrowserWindow, nativeTheme, ipcMain } from 'electron'
+/* eslint-disable no-undef */
+import { app, nativeTheme, ipcMain } from 'electron'
 import webServer from './api/web/web'
+import tcpServer from './api/socket'
+import createWindow from './api/createWindow'
+
+require('./api/global')
+require('./api/player')
+require('./api/menu')
 
 webServer.listen(12300, () => {
   console.info('Listening on 12300')
+})
+
+tcpServer.read('1339', (data) => {
+  console.log('from tcpServer : ', data)
 })
 
 try {
@@ -14,55 +25,11 @@ try {
 if (process.env.PROD) {
   global.__statics = __dirname
 }
-let mainWindow
-let controlWindow
 
-function createWindow () {
-  mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 600,
-    useContentSize: true,
-    webPreferences: {
-      nodeIntegration: true,
-      enableRemoteModule: true,
-      contextIsolation: false,
-      nodeIntegrationInWorker: true,
-      webSecurity: false
-    }
-  })
-  mainWindow.loadURL(process.env.APP_URL)
-  mainWindow.on('closed', () => {
-    mainWindow = null
-    app.quit()
-  })
-
-  controlWindow = new BrowserWindow({
-    width: 1000,
-    height: 600,
-    useContentSize: true,
-    webPreferences: {
-      nodeIntegration: process.env.QUASAR_NODE_INTEGRATION,
-      nodeIntegrationInWorker: process.env.QUASAR_NODE_INTEGRATION,
-      enableRemoteModule: true,
-      contextIsolation: false,
-      webSecurity: false
-    }
-  })
-  controlWindow.loadURL(process.env.APP_URL)
-  controlWindow.on('close', (e) => {
-    if (mainWindow) {
-      e.preventDefault()
-      controlWindow.hide()
-    } else {
-      controlWindow = null
-    }
-  })
-  controlWindow.on('closed', () => {
-    controlWindow = null
-  })
-}
-
-app.on('ready', createWindow)
+app.on('ready', async () => {
+  // eslint-disable-next-line no-undef
+  windows = await createWindow(windows)
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -70,17 +37,12 @@ app.on('window-all-closed', () => {
   }
 })
 
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow()
+app.on('activate', async () => {
+  if (windows.mainWindow === null) {
+    windows = await createWindow(windows)
   }
 })
 
-ipcMain.on('getWindow', (event, data) => {
-  console.log(data)
-  event.returnValue = data
-})
-
 ipcMain.on('showControlWindow', (evnet) => {
-  controlWindow.show()
+  windows.controlWindow.show()
 })
