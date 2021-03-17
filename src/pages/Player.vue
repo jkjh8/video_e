@@ -21,7 +21,7 @@
         @play="play"
         @playing="playing"
         @paused ="paused"
-        @ended="ended"
+        @ended="sendControl('ended')"
         @ready="ready"
         @timeupdate="updateTime"
         @duration="duration"
@@ -76,7 +76,7 @@ export default {
     playing () { this.sendStatus('isPlaying', true) },
     paused () { this.sendStatus('isPlaying', false) },
     ended () { this.sendStatus('isPlaying', false) },
-    ready () { console.log('ready') },
+    ready () { this.sendControl('ready') },
     updateTime (time) { this.sendStatus('time', time) },
     duration (time) { this.sendStatus('duration', time) }
   }

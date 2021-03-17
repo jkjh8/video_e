@@ -12,6 +12,7 @@ export const playerfunc = {
       ipcRenderer.on('control', (e, control) => {
         switch (control.addr) {
           case 'play':
+            console.log('play')
             this.player.play()
             break
           case 'pause':

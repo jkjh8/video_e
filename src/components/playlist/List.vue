@@ -66,12 +66,13 @@
 </template>
 
 <script>
-import { ipcRenderer } from 'electron'
 import ConfirmDialog from './Confirm'
 import Textfield from './Textfield'
+import { playerfunc } from '../../mixins/playerFunc'
 
 export default {
   name: 'Playlist',
+  mixins: [playerfunc],
   components: { ConfirmDialog, Textfield },
   props: ['status'],
   data () {
@@ -85,16 +86,16 @@ export default {
   },
   methods: {
     async clickList (idx) {
-      ipcRenderer.send('control', { control: 'listIdx', value: idx })
+      this.sendControl('listIdx', idx)
     },
     addPlaylist (list) {
-      ipcRenderer.send('control', { control: 'addList', value: { name: list } })
+      this.sendControl('addList', list)
     },
     delPlaylist (list) {
-      ipcRenderer.send('control', { control: 'delList', value: list })
+      this.sendControl('delList', list)
     },
     delAll () {
-      ipcRenderer.send('control', { control: 'delAll' })
+      this.sendControl('delAll')
     }
   }
 }

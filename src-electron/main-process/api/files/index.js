@@ -38,6 +38,17 @@ async function open () {
   }
 }
 
+async function openFileIdx () {
+  status.file = status.items[status.itemIdx]
+  windows.mainWindow.send('file', status.file)
+  if (status.mode === 'nomal') {
+    status.play = false
+  }
+  status.isPlaying = false
+  func.sendMsg('status', status)
+  return status
+}
+
 async function sendFileObj (file) {
   status.file = await getFileObj(file)
   windows.mainWindow.webContents.send('file', status.file)
@@ -62,9 +73,11 @@ async function openRemote () {
 }
 
 function clear () {
-  windows.mainWindow.webContents.send('file', null)
+  status.file = null
+  func.sendMsg('status', status)
+  func.sendMsg('file', null)
   return null
 }
 
-const files = { getFileObj: getFileObj, open: open, openRemote: openRemote, sendFileObj: sendFileObj, clear: clear }
+const files = { getFileObj: getFileObj, open: open, openRemote: openRemote, openFileIdx: openFileIdx, sendFileObj: sendFileObj, clear: clear }
 export default files

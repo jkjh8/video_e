@@ -1,13 +1,12 @@
 import db from '../db'
-
-const files = require('../files')
+import fileFunc from '../files'
 
 async function getList () {
-  const result = await db.list.find({})
+  const result = await db.list.find({}).sort({ createdAt: 1 })
   if (result.length === 0) {
     try {
       await db.list.insert({ name: 'default' })
-      return await db.list.find()
+      return await db.list.find({}).sort({ createdAt: 1 })
     } catch (err) {
       console.log('getList', err)
     }
@@ -16,7 +15,7 @@ async function getList () {
 }
 
 async function getListItems (list) {
-  return await db.items.find({ playlist: list })
+  return await db.items.find({ playlist: list }).sort({ createdAt: 1 })
 }
 
 async function addList (list) {
@@ -33,9 +32,9 @@ async function addList (list) {
 
 async function addListItem (item) {
   try {
-    const itemObj = await files.getFileObj(item)
+    const itemObj = await fileFunc.getFileObj(item)
     itemObj.playlist = status.currListName
-    await db.items.insert(itemObj)
+    db.items.insert(itemObj)
   } catch (err) {
     console.log('addListItem', err)
   }
@@ -43,9 +42,10 @@ async function addListItem (item) {
 
 async function addListItems (items) {
   try {
-    items.forEach(async (item) => {
+    for (const item of items) {
       await addListItem(item)
-    })
+    }
+    return await db.items.find({ playlist: status.currListName }).sort({ createdAt: 1 })
   } catch (err) {
     console.log('addListItems', err)
   }
@@ -70,7 +70,7 @@ async function delListItem (item) {
 
 async function delListItems (list) {
   try {
-    await db.items.remove({ playlist: list })
+    await db.items.remove({ playlist: list }, { multi: true })
   } catch (err) {
     console.log('delListItems', err)
   }
@@ -78,8 +78,8 @@ async function delListItems (list) {
 
 async function delAll () {
   try {
-    await db.list.remove()
-    await db.items.remove()
+    await db.list.remove({}, { multi: true })
+    await db.items.remove({}, { multi: true })
   } catch (err) {
     console.log('delAll', err)
   }

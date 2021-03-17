@@ -40,15 +40,15 @@
             v-for="(item, idx) in status.items"
             :key="idx"
             :active="status.itemIdx === idx"
-            @click.native.prevent="clickItem(idx)"
+            @click.native.prevent="sendControl('itemIdx', idx)"
             clickable
           >
             <q-item-section top>
-              <div>{{ item.basename }}</div>
+              <div>{{ item.name }}</div>
               <div
                 class="text-caption text-blue-grey"
               >
-                {{ item.dirname }}
+                {{ item.path }}
               </div>
             </q-item-section>
 
@@ -58,14 +58,14 @@
                 round
                 color="red"
                 icon="delete"
-                @click.capture.stop="deleteItem(item)"
+                @click.capture.stop="sendControl('delItem', item)"
               >
               </q-btn>
             </q-item-section>
           </q-item>
         </q-list>
         <div
-          v-if="status.items.length === 0"
+          v-if="dragDropWin"
           class="fit row wrap justify-center items-center content-center"
           :style="over ? 'background: #F0F8FF' : ''"
           style="min-height: 58px;"
@@ -77,7 +77,7 @@
     <ConfirmDialog
       ref="dialog"
       :contents="contents"
-      @confirm="deleteAllItems"
+      @confirm="sendControl('delItems')"
     />
   </q-card>
 </template>
@@ -93,6 +93,15 @@ export default {
   mixins: [playerfunc],
   components: { ConfirmDialog },
   props: ['status'],
+  computed: {
+    dragDropWin () {
+      if (this.status.items && this.status.items.length > 0) {
+        return false
+      } else {
+        return true
+      }
+    }
+  },
   data () {
     return {
       contents: {

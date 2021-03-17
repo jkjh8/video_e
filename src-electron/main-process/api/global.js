@@ -11,7 +11,7 @@ const status = {
   volume: 100,
   loop: false,
 
-  mode: 'noaml',
+  mode: 'nomal',
   play: false,
   isPlaying: false,
   fullscreen: false,

@@ -148,10 +148,10 @@ export default {
     },
     play () {
       if (this.status.isPlaying) {
-        console.log('pause')
+        this.sendStatus('play', false)
         this.sendControl('pause')
       } else {
-        console.log('play')
+        this.sendStatus('play', true)
         this.sendControl('play')
       }
     }
