@@ -29,16 +29,6 @@ export default function (windows) {
     status.fullscreen = false
     func.sendMsg('status', status)
   })
-  // resize event
-  let resizeTimeout
-  windows.mainWindow.on('resize', (e) => {
-    clearTimeout(resizeTimeout)
-    resizeTimeout = setTimeout (function () {
-      var size = windows.mainWindow.getSize()
-      windows.mainWindow.setSize(size[0], parseInt(size[0] * 9 / 16) + 51)
-    }, 100)
-  })
-  windows.mainWindow.setSize(1000, 564)
 
   windows.controlWindow = new BrowserWindow({
     width: 1000,
