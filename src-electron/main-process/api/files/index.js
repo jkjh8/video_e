@@ -2,8 +2,8 @@
 import { dialog } from 'electron'
 import path from 'path'
 
-const fileType = require('file-type')
-const func = require('../function')
+import fileType from 'file-type'
+import { sendMsg } from '../function'
 
 async function getFileObj (file) {
   const type = await fileType.fromFile(file)
@@ -45,14 +45,14 @@ async function openFileIdx () {
     status.play = false
   }
   status.isPlaying = false
-  func.sendMsg('status', status)
+  sendMsg('status', status)
   return status
 }
 
 async function sendFileObj (file) {
   status.file = await getFileObj(file)
   windows.mainWindow.webContents.send('file', status.file)
-  func.sendMsg('status', status)
+  sendMsg('status', status)
   return fileObj
 }
 
@@ -74,8 +74,8 @@ async function openRemote () {
 
 function clear () {
   status.file = null
-  func.sendMsg('status', status)
-  func.sendMsg('file', null)
+  sendMsg('status', status)
+  sendMsg('file', null)
   return null
 }
 

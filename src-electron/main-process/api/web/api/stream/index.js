@@ -20,7 +20,6 @@ module.exports.stream = function (req, res, next) {
     }
     res.writeHead(206, head)
     fileStream.pipe(res)
-    console.log('range:', range)
   } else {
     const head = {
       'Content-Length': fileSize,

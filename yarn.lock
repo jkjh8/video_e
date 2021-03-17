@@ -9647,6 +9647,11 @@ vue-eslint-parser@^7.0.0:
     esquery "^1.4.0"
     lodash "^4.17.15"
 
+vue-fullscreen@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/vue-fullscreen/-/vue-fullscreen-2.3.2.tgz#e8d6269baf63bb97510b900bc5bd3abe6e5793d5"
+  integrity sha512-TCFec77ElJAtc9FtoBBFZOKg2fu3RG3M/AE/81MOCPuKXorThuWX/iNPSrnY2eRJ7n8mROHd+C9xd/hWZfs9OQ==
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"

@@ -1,5 +1,5 @@
 import { app, BrowserWindow } from 'electron'
-const func = require('./function')
+import { sendMsg } from './function'
 
 export default function (windows) {
   windows.mainWindow = new BrowserWindow({
@@ -22,12 +22,17 @@ export default function (windows) {
   windows.mainWindow.on('enter-full-screen', () => {
     windows.mainWindow.setMenuBarVisibility(false)
     status.fullscreen = true
-    func.sendMsg('status', status)
+    sendMsg('status', status)
   })
   windows.mainWindow.on('leave-full-screen', () => {
     windows.mainWindow.setMenuBarVisibility(true)
     status.fullscreen = false
-    func.sendMsg('status', status)
+    sendMsg('status', status)
+  })
+
+  windows.mainWindow.on('resize', (e) => {
+    var size = windows.mainWindow.getSize()
+    windows.mainWindow.setSize(size[0], parseInt(size[0] * 9 / 16) + 52, true)
   })
 
   windows.controlWindow = new BrowserWindow({

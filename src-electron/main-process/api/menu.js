@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import { app, Menu } from 'electron'
 import files from './files'
+import { enterFullscreen } from './function'
 
 Menu.setApplicationMenu(
   Menu.buildFromTemplate([
@@ -32,7 +33,7 @@ Menu.setApplicationMenu(
         {
           label: 'Toggle Fullscreen',
           accelerator: 'F11',
-          click () { }
+          click () { enterFullscreen() }
         }
       ]
     },

@@ -8,6 +8,7 @@
       :no-controls="!status.controls"
       :preload="status.preload"
       :background-color="status.background"
+      :playsinline="true"
 
       :autoplay="status.autoplay"
       :loop="status.loop"
@@ -17,10 +18,10 @@
       :sources="sources"
 
       @play="play"
-      @playing="playing"
-      @paused ="paused"
+      @playing="sendStatus('isPlaying', true)"
+      @paused ="sendStatus('isPlaying', false)"
       @ended="sendControl('ended')"
-      @ready="ready"
+      @ready="sendControl('ready')"
       @timeupdate="updateTime"
       @duration="duration"
     >
@@ -62,19 +63,17 @@ export default {
       }
     }
   },
-  async mounted () {
-    await this.player.setFullscreen()
-    this.sync()
+  created () {
     this.controlFunc()
     this.sourceChange()
     this.updateStatus()
   },
+  mounted () {
+    // this.player.setFullscreen()
+    this.sync()
+  },
   methods: {
     play () { console.log('play') },
-    playing () { this.sendStatus('isPlaying', true) },
-    paused () { this.sendStatus('isPlaying', false) },
-    ended () { this.sendStatus('isPlaying', false) },
-    ready () { this.sendControl('ready') },
     updateTime (time) { this.sendStatus('time', time) },
     duration (time) { this.sendStatus('duration', time) }
   }
@@ -82,9 +81,15 @@ export default {
 </script>
 
 <style>
-/* .q-media {
-  pointer-events: none;
-} */
+.q-media {
+  position: relative;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 ::-webkit-scrollbar {
     display: none;
 }
