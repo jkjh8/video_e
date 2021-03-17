@@ -18,6 +18,14 @@ export default function (windows) {
     windows.mainWindow = null
     app.quit()
   })
+  let resizeTimeout
+  windows.mainWindow.on('resize', (e) => {
+    clearTimeout(resizeTimeout)
+    resizeTimeout = setTimeout (function () {
+      var size = windows.mainWindow.getSize()
+      windows.mainWindow.setSize(size[0], parseInt(size[0] * 9 / 16) + 45)
+    }, 100)
+  })
 
   windows.controlWindow = new BrowserWindow({
     width: 1000,

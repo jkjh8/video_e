@@ -2,21 +2,18 @@
 import { dialog } from 'electron'
 import path from 'path'
 
+const fileType = require('file-type')
 const func = require('../function')
 
-async function getFileObj (fileName) {
-  const filePath = await path.parse(fileName)
-  const ext = await filePath.ext.split('.').pop()
-  let type
-  if (ext === 'mp3' || ext === 'wav' || ext === 'flac') {
-    type = 'audio'
-  } else {
-    type = 'video'
-  }
+async function getFileObj (file) {
+  const type = await fileType.fromFile(file)
   return {
-    file: fileName,
-    type: `${type}/${ext}`,
-    src: `${status.stream}?file=${encodeURIComponent(fileName)}&type=${type}/${ext}`
+    file: file,
+    name: await path.basename(file),
+    path: await path.dirname(file),
+    type: type.mime,
+    ext: type.ext,
+    src: `${status.stream}?file=${encodeURIComponent(file)}&type=${type.mime}`
   }
 }
 
@@ -36,11 +33,16 @@ async function open () {
   })
   if (files && files.length > 0) {
     status.isPlaying = false
-    status.file = await getFileObj(files[0])
-    windows.mainWindow.webContents.send('file', status.file)
-    func.sendStatus('status', status)
+    await sendFileObj(files[0])
     return status.file
   }
+}
+
+async function sendFileObj (file) {
+  status.file = await getFileObj(file)
+  windows.mainWindow.webContents.send('file', status.file)
+  func.sendMsg('status', status)
+  return fileObj
 }
 
 async function openRemote () {
@@ -64,5 +66,5 @@ function clear () {
   return null
 }
 
-const files = { getFileObj: getFileObj, open: open, openRemote: openRemote, clear: clear }
+const files = { getFileObj: getFileObj, open: open, openRemote: openRemote, sendFileObj: sendFileObj, clear: clear }
 export default files

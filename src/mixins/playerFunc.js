@@ -15,6 +15,7 @@ export const playerfunc = {
             this.player.play()
             break
           case 'pause':
+            console.log('pause')
             this.player.pause()
             break
           case 'time':

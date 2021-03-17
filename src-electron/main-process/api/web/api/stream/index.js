@@ -20,10 +20,11 @@ module.exports.stream = function (req, res, next) {
     }
     res.writeHead(206, head)
     fileStream.pipe(res)
+    console.log('range:', range)
   } else {
     const head = {
       'Content-Length': fileSize,
-      'Content-Type': type.split('/')[0]
+      'Content-Type': type
     }
     res.writeHead(200, head)
     fs.createReadStream(filePath).pipe(res)

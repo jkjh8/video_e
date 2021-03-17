@@ -3,6 +3,9 @@ import { app, nativeTheme, ipcMain } from 'electron'
 import webServer from './api/web/web'
 import tcpServer from './api/socket'
 import createWindow from './api/createWindow'
+import playlistFunc from './api/playlist'
+
+const func = require('./api/function')
 
 require('./api/global')
 require('./api/player')
@@ -29,6 +32,9 @@ if (process.env.PROD) {
 app.on('ready', async () => {
   // eslint-disable-next-line no-undef
   windows = await createWindow(windows)
+  status.list = await playlistFunc.getList()
+  status.items = await playlistFunc.getListItems(status.currListName)
+  // func.sendMsg('status', status)
 })
 
 app.on('window-all-closed', () => {

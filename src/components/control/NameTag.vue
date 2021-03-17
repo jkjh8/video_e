@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="row"
+      class="row no-wrap"
     >
       <span class="q-px-md">
         <q-img

@@ -1,43 +1,46 @@
 <template>
-  <div>
-    <q-media-player
-      ref="mediaplayer"
-      :type="status.type"
-      :show-spinner="status.spinner"
-      :show-big-play-button="status.bigBtn"
-      :no-controls="!status.controls"
-      :preload="status.preload"
-      :background-color="status.background"
+  <div class="fit">
+    <q-responsive :ratio="16/9">
+      <q-media-player
+        class="col-grow"
+        ref="mediaplayer"
+        :type="status.type"
+        :show-spinner="status.spinner"
+        :show-big-play-button="status.bigBtn"
+        :no-controls="!status.controls"
+        :preload="status.preload"
+        :background-color="status.background"
 
-      :autoplay="status.autoplay"
-      :loop="status.loop"
-      :muted="status.mute"
-      :volume="status.volume"
+        :autoplay="status.autoplay"
+        :loop="status.loop"
+        :muted="status.mute"
+        :volume="status.volume"
 
-      :sources="sources"
+        :sources="sources"
 
-      @play="play"
-      @playing="playing"
-      @paused ="paused"
-      @ended="ended"
-      @ready="ready"
-      @timeupdate="updateTime"
-      @duration="duration"
-    >
-      <template
-        v-if="!status.file && status.logo"
-        v-slot:overlay
+        @play="play"
+        @playing="playing"
+        @paused ="paused"
+        @ended="ended"
+        @ready="ready"
+        @timeupdate="updateTime"
+        @duration="duration"
       >
-        <div
-          class="full-height row justify-center content-center"
+        <template
+          v-if="!status.file && status.logo"
+          v-slot:overlay
         >
-          <q-img
-            style="max-width: 100px"
-            src="logo_100.png"
-          />
-        </div>
-      </template>
-    </q-media-player>
+          <div
+            class="full-height row justify-center content-center"
+          >
+            <q-img
+              style="max-width: 100px"
+              src="logo_100.png"
+            />
+          </div>
+        </template>
+      </q-media-player>
+    </q-responsive>
   </div>
 </template>
 
@@ -84,4 +87,7 @@ export default {
 /* .q-media {
   pointer-events: none;
 } */
+::-webkit-scrollbar {
+    display: none;
+}
 </style>

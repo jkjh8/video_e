@@ -27,7 +27,7 @@ const status = {
   items: [],
   listIdx: 0,
   itemIdx: 0,
-  currListName: '',
+  currListName: 'default',
 
   stream: 'http://localhost:12300/stream'
 }

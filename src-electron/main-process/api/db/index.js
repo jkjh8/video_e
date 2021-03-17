@@ -1,9 +1,9 @@
 import dbDictionary from './dbInit'
 
 const db = {
-  list: new dbDictionary('linst.db'),
-  itmes: new dbDictionary('items.db'),
-  setup: new dbDictionary('setup')
+  list: dbDictionary('linst.db'),
+  items: dbDictionary('items.db'),
+  setup: dbDictionary('setup')
 }
 
 export default db
