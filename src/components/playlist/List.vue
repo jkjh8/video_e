@@ -31,29 +31,32 @@
         <q-item
           v-for="(item, idx) in status.list"
           :key="idx"
+          class="q-pa-none"
           :active="status.listIdx === idx"
           @click="clickList(idx)"
-          @dragover="dragover($event)"
+          @dragover="dragover($event, idx)"
           @drop="drop($event, idx)"
-          @dragleave="dragleave"
+          @dragleave="dragleave($event, idx)"
           clickable
           v-ripple
         >
-          <q-item-section>
-            <div>
-              {{ item.name }}
-            </div>
-          </q-item-section>
-          <q-item-section top side>
-            <q-btn
-              flat
-              round
-              color="red"
-              icon="delete"
-              @click.capture.stop="delPlaylist(item)"
-            >
-            </q-btn>
-          </q-item-section>
+          <div class="fit row no-wrap q-px-md" :ref="idx">
+            <q-item-section>
+              <div>
+                {{ item.name }}
+              </div>
+            </q-item-section>
+            <q-item-section top side>
+              <q-btn
+                flat
+                round
+                color="red"
+                icon="delete"
+                @click.capture.stop="delPlaylist(item)"
+              >
+              </q-btn>
+            </q-item-section>
+          </div>
         </q-item>
       </q-list>
     </q-card-section>
@@ -104,16 +107,20 @@ export default {
     },
     drop (event, idx) {
       event.preventDefault()
-      event.target.style.background = ''
+      // event.target.style.background = ''
+      this.$refs[idx][0].style.background = ''
       console.log(event, idx)
     },
-    dragover (event) {
+    dragover (event, idx) {
       event.preventDefault()
-      event.target.style.background = '#F0F8FF'
+      console.log(this.$refs[idx][0].style)
+      // event.target.style.background = '#F0F8FF'
+      this.$refs[idx][0].style.background = '#F0F8FF'
     },
-    dragleave (event) {
+    dragleave (event, idx) {
       // this.over = false
-      event.target.style.background = ''
+      // event.target.style.background = ''
+      this.$refs[idx][0].style.background = ''
     }
   }
 }
