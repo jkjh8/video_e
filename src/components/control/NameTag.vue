@@ -7,7 +7,7 @@
         <q-img
           style="height: 70px; width: 122px"
           :ratio="16/9"
-          :src="status.thumbnail ? 'status.thumbnail':'logo_sq.png'"
+          :src="status.thumbnail ? status.thumbnail : 'logo_sq.png'"
         />
       </span>
       <span class="text-black" v-if="status && status.file">

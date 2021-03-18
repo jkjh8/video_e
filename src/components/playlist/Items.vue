@@ -18,7 +18,7 @@
           flat
           round
           icon="add_circle"
-          @click="sendControl('addItems')"
+          @click="sendControl('getItems')"
         >
         </q-btn>
         <q-btn
@@ -84,7 +84,6 @@
 
 <script>
 // import path from 'path'
-import { ipcRenderer } from 'electron'
 import ConfirmDialog from './Confirm'
 import { playerfunc } from '../../mixins/playerFunc'
 
@@ -112,18 +111,6 @@ export default {
     }
   },
   methods: {
-    callFileDialog () {
-      ipcRenderer.send('control', { control: 'getItems' })
-    },
-    clickItem (idx) {
-      ipcRenderer.send('control', { control: 'itemIdx', value: idx })
-    },
-    deleteItem (item) {
-      ipcRenderer.send('control', { control: 'delItem', value: item })
-    },
-    deleteAllItems () {
-      ipcRenderer.send('control', { control: 'delItems' })
-    },
     dragover (event) {
       event.preventDefault()
       this.over = true
@@ -140,7 +127,7 @@ export default {
           fileArray.push(files[i].path)
         }
       }
-      ipcRenderer.send('control', { control: 'addItems', value: fileArray })
+      this.sendControl('addItems', fileArray)
       if (fileArray.length > 0) {
         this.$q.notify({
           position: 'top',

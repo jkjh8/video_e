@@ -55,6 +55,7 @@ export default {
     this.sync()
     this.updateStatus()
     this.createClock()
+    this.errorNotify()
   },
   methods: {
     createClock () {

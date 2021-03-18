@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
-import { dialog } from 'electron'
-import path from 'path'
-
 import fileType from 'file-type'
-import { sendMsg } from '../function'
+import fs from 'fs'
+import path from 'path'
+import { dialog } from 'electron'
+import { genThunbnail, sendMsg } from '../function'
 
 async function getFileObj (file) {
   const type = await fileType.fromFile(file)
@@ -34,26 +34,32 @@ async function open () {
   if (files && files.length > 0) {
     status.isPlaying = false
     await sendFileObj(files[0])
-    return status.file
+    return status
   }
 }
 
 async function openFileIdx () {
+  const result = await fs.existsSync(status.items[status.itemIdx].file)
   status.file = status.items[status.itemIdx]
+  if (!result) {
+    return false
+  }
   windows.mainWindow.send('file', status.file)
   if (status.mode === 'nomal') {
     status.play = false
   }
   status.isPlaying = false
   sendMsg('status', status)
-  return status
+  genThunbnail()
+  return true
 }
 
 async function sendFileObj (file) {
   status.file = await getFileObj(file)
   windows.mainWindow.webContents.send('file', status.file)
+  genThunbnail()
   sendMsg('status', status)
-  return fileObj
+  return status.file
 }
 
 async function openRemote () {

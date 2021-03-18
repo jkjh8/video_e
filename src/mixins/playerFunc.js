@@ -37,6 +37,16 @@ export const playerfunc = {
       ipcRenderer.on('status', (e, data) => {
         this.status = data
       })
+    },
+    errorNotify () {
+      ipcRenderer.on('error', (e, msg) => {
+        this.$q.notify({
+          position: 'top',
+          timeout: 1500,
+          message: msg.message,
+          caption: msg.caption
+        })
+      })
     }
   }
 }

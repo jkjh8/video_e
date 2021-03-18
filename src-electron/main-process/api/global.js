@@ -1,4 +1,6 @@
 const status = {
+  arch: '',
+
   type: 'video',
   spinner: false,
   bigBtn: false,
@@ -29,10 +31,31 @@ const status = {
   itemIdx: 0,
   currListName: 'default',
 
-  stream: 'http://localhost:12300/stream'
+  stream: 'http://localhost:9074/stream',
+  static: 'http://localhost:9074/static'
 }
 
-const windows = { mainWindow: null, controlWindow: null }
+const windows = {
+  mainWindow: null,
+  controlWindow: null,
+  apiWindow: null
+}
 
+const route = {
+  mainWindow: {
+    id: 1,
+    route: 'player'
+  },
+  controlWindow: {
+    id: 2,
+    route: 'control'
+  },
+  apiWindow: {
+    id: null,
+    route: 'api'
+  }
+}
+
+global.route = route
 global.windows = windows
 global.status = status

@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from 'electron'
 import { sendMsg } from './function'
 
-export default function (windows) {
+export const createMainWindow = function (windows) {
   windows.mainWindow = new BrowserWindow({
     width: 1000,
     height: 600,
@@ -35,6 +35,10 @@ export default function (windows) {
     windows.mainWindow.setSize(size[0], parseInt(size[0] * 9 / 16) + 52, true)
   })
 
+  windows.mainWindow.on('ready-to-show', (e) => {
+    route.mainWindow.id = windows.mainWindow.id
+  })
+
   windows.controlWindow = new BrowserWindow({
     width: 1000,
     height: 600,
@@ -58,6 +62,31 @@ export default function (windows) {
   })
   windows.controlWindow.on('closed', () => {
     windows.controlWindow = null
+  })
+  windows.controlWindow.on('ready-to-show', (e) => {
+    route.controlWindow.id = windows.controlWindow.id
+  })
+  return windows
+}
+export const createApiWindow = function (windows) {
+  windows.apiWindow = new BrowserWindow({
+    width: 600,
+    height: 600,
+    useContentSize: true,
+    webPreferences: {
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
+      enableRemoteModule: true,
+      contextIsolation: false,
+      webSecurity: false
+    }
+  })
+  windows.apiWindow.loadURL(process.env.APP_URL)
+  windows.apiWindow.on('closed', () => {
+    windows.apiWindow = null
+  })
+  windows.apiWindow.on('ready-to-show', (e) => {
+    route.apiWindow.id = windows.apiWindow.id
   })
   return windows
 }

@@ -111,6 +111,34 @@ async function refreshDb (status, first = false) {
   return status
 }
 
+async function next () {
+  try {
+    const itemsLength = status.items.length
+    status.itemIdx = status.itemIdx + 1
+    if (status.itemIdx >= itemsLength) {
+      status.itemIdx = 0
+    }
+    const result = await fileFunc.openFileIdx()
+    return result
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+async function previous () {
+  try {
+    const itemsLength = status.items.length
+    status.itemIdx = status.itemIdx - 1
+    if (status.itemIdx < 0) {
+      status.itemIdx = itemsLength - 1
+    }
+    const result = await fileFunc.openFileIdx()
+    return result
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 const dbFn = {
   getList: getList,
   getListItems: getListItems,
@@ -123,7 +151,9 @@ const dbFn = {
   delAll: delAll,
   getSetup: getSetup,
   updateSetup: updateSetup,
-  refreshDb: refreshDb
+  refreshDb: refreshDb,
+  next: next,
+  previous: previous
 }
 
 export default dbFn

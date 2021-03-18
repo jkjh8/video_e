@@ -105,10 +105,10 @@
             @click="sendStatus('mute', !status.mute)"
           />
           <q-slider
-            v-model="volume"
+            :value="status.volume"
             :min="0"
             :max="100"
-            @input="sendStatus('volume', volume)"
+            @input="sendStatus('volume', $event)"
           />
           <div class="q-ml-lg q-mr-sm">{{ volume }}%</div>
         </div>

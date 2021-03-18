@@ -9,15 +9,16 @@
 </template>
 
 <script>
-import { remote } from 'electron'
+import { remote, ipcRenderer } from 'electron'
 export default {
   name: 'PageIndex',
-  created () {
-    const win = remote.getCurrentWindow()
-    if (win.id === 1) {
-      this.$router.push('player')
-    } else {
-      this.$router.push('control')
+  async created () {
+    const route = await ipcRenderer.sendSync('getWindows')
+    const win = await remote.getCurrentWindow()
+    for (const prop in route) {
+      if (route[prop].id === win.id) {
+        this.$router.push(route[prop].route)
+      }
     }
   }
 }

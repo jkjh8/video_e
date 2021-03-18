@@ -1,18 +1,8 @@
-import { ipcMain } from 'electron'
 import fileFunc from '../files'
-import playlistFunc from '../playlist'
+import listFunc from '../playlist'
 import { sendMsg, enterFullscreen } from '../function'
 
-ipcMain.on('status', (event, data) => {
-  status[data.addr] = data.value
-  sendMsg('status', status)
-})
-
-ipcMain.on('sync', (event) => {
-  event.returnValue = status
-})
-
-ipcMain.on('control', async (event, data) => {
+export default async function (data) {
   switch (data.addr) {
     case 'fullscreen':
       enterFullscreen()
@@ -28,73 +18,108 @@ ipcMain.on('control', async (event, data) => {
     case 'clear':
       status.isPlaying = false
       status.play = false
+      status.thumbnail = ''
       fileFunc.clear()
       break
-    case 'next':
-      next()
+    case 'next': {
+      const result = await listFunc.next()
+      if (!result) {
+        sendMsg('error', {
+          message: 'The file does not exist',
+          caption: status.items[status.itemIdx].name
+        })
+        await listFunc.next()
+      }
       break
-    case 'previous':
-      previous()
+    }
+    case 'previous': {
+      const result = await listFunc.previous()
+      if (!result) {
+        sendMsg('error', {
+          message: 'The file does not exist',
+          caption: status.items[status.itemIdx].name
+        })
+        await listFunc.previous()
+      }
       break
-    case 'itemIdx':
+    }
+    case 'itemIdx': {
       status.itemIdx = data.value
-      fileFunc.openFileIdx()
+      const result = await fileFunc.openFileIdx()
+      if (!result) {
+        sendMsg('error', {
+          message: 'The file does not exist',
+          caption: status.items[status.itemIdx].name
+        })
+        await listFunc.next()
+      }
       sendMsg('status', status)
       break
-    case 'addItems': {
+    }
+    case 'getItems': {
       const items = await fileFunc.openRemote()
-      status.items = await playlistFunc.addListItems(items)
+      status.items = await listFunc.addListItems(items)
+      sendMsg('status', status)
+      break
+    }
+    case 'addItems': {
+      status.items = await listFunc.addListItems(data.value)
       sendMsg('status', status)
       break
     }
     case 'delItem':
-      await playlistFunc.delListItem(data.value)
-      status.items = await playlistFunc.getListItems(status.currListName)
+      await listFunc.delListItem(data.value)
+      status.items = await listFunc.getListItems(status.currListName)
       sendMsg('status', status)
       break
     case 'delItems':
-      await playlistFunc.delListItems(status.currListName)
+      await listFunc.delListItems(status.currListName)
       status.items = []
       sendMsg('status', status)
       break
     case 'listIdx':
       status.listIdx = data.value
       status.currListName = status.list[status.listIdx]
-      status.items = await playlistFunc.getListItems(status.currListName)
+      status.items = await listFunc.getListItems(status.currListName)
       sendMsg('status', status)
       break
     case 'addList':
-      await playlistFunc.addList(data.value)
-      status.list = await playlistFunc.getList()
+      await listFunc.addList(data.value)
+      status.list = await listFunc.getList()
       sendMsg('status', status)
       break
     case 'delList':
-      await playlistFunc.delList(data.value)
-      status.list = await playlistFunc.getList()
+      await listFunc.delList(data.value)
+      status.list = await listFunc.getList()
       if (status.listIdx > status.list.length - 1) {
         status.listIdx = status.list.length - 1
         status.currListName = status.list[status.listIdx]
-        status.items = await playlistFunc.getListItems(status.currListName)
+        status.items = await listFunc.getListItems(status.currListName)
       }
       sendMsg('status', status)
       break
     case 'delAll':
-      await playlistFunc.delAll()
-      status.list = await playlistFunc.getList()
-      status.items = await playlistFunc.getListitems(status.currListName)
+      await listFunc.delAll()
+      status.list = []
+      status.items = []
       sendMsg('status', status)
       break
     case 'ended':
       await ended()
       break
     case 'ready':
-      if (status.play && status.mode === 'playlist') {
-        if (!status.loopAll && status.itemIdx === 0) {
+      if (status.play) {
+        if (status.mode === 'playlist') {
+          if (!status.loopAll && status.itemIdx === 0) {
+            status.play = false
+            sendMsg('status', status)
+            break
+          }
+          sendMsg('control', { addr: 'play' })
+        } else {
           status.play = false
-          sendMsg('status', status)
-          break
+          sendMsg('control', { addr: 'play' })
         }
-        sendMsg('control', { addr: 'play' })
       }
       break
 
@@ -102,35 +127,21 @@ ipcMain.on('control', async (event, data) => {
       sendMsg('control', data)
       break
   }
-})
-
-async function next () {
-  const itemsLength = status.items.length
-  status.itemIdx = status.itemIdx + 1
-  if (status.itemIdx >= itemsLength) {
-    status.itemIdx = 0
-  }
-  fileFunc.openFileIdx()
-}
-
-async function previous () {
-  const itemsLength = status.items.length
-  status.itemIdx = status.itemIdx - 1
-  if (status.itemIdx < 0) {
-    status.itemIdx = itemsLength - 1
-  }
-  fileFunc.openFileIdx()
 }
 
 async function ended () {
-  const itemsLength = status.items.length
   if (status.mode === 'playlist') {
-    console.log('playlist')
-    status.itemIdx = status.itemIdx + 1
-    if (status.itemIdx >= itemsLength) {
-      status.itemIdx = 0
+    const result = await listFunc.next()
+    if (!result) {
+      sendMsg('error', {
+        message: 'The file does not exist',
+        caption: status.items[status.itemIdx].name
+      })
+      listFunc.next()
     }
-    console.log(status.itemIdx)
-    fileFunc.openFileIdx()
+  } else {
+    status.play = false
+    status.isPlaying = false
+    sendMsg('status', status)
   }
 }

@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import { app, Menu } from 'electron'
+import { createApiWindow } from './createWindow'
 import files from './files'
 import { enterFullscreen } from './function'
 
@@ -43,7 +44,7 @@ Menu.setApplicationMenu(
         {
           label: 'Api',
           accelerator: 'F1',
-          click () { }
+          click () { createApiWindow(windows) }
         },
         { role: 'toggleDevTools' }
       ]

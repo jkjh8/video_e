@@ -1,22 +1,17 @@
 /* eslint-disable no-undef */
 import { app, nativeTheme, ipcMain } from 'electron'
-import webServer from './api/web/web'
-import tcpServer from './api/socket'
-import createWindow from './api/createWindow'
+import { createMainWindow } from './api/createWindow'
+import { sendMsg } from './api/function'
 import playlistFunc from './api/playlist'
-
-const func = require('./api/function')
+import webServer from './api/web/web'
+import controls from './api/player'
 
 require('./api/global')
-require('./api/player')
 require('./api/menu')
+require('./api/tcpServer')
 
-webServer.listen(12300, () => {
-  console.info('Listening on 12300')
-})
-
-tcpServer.read('1339', (data) => {
-  console.log('from tcpServer : ', data)
+webServer.listen(9074, () => {
+  console.info('Listening on 9074')
 })
 
 try {
@@ -31,10 +26,9 @@ if (process.env.PROD) {
 
 app.on('ready', async () => {
   // eslint-disable-next-line no-undef
-  windows = await createWindow(windows)
+  windows = await createMainWindow(windows)
   status.list = await playlistFunc.getList()
   status.items = await playlistFunc.getListItems(status.currListName)
-  // func.sendMsg('status', status)
 })
 
 app.on('window-all-closed', () => {
@@ -45,10 +39,27 @@ app.on('window-all-closed', () => {
 
 app.on('activate', async () => {
   if (windows.mainWindow === null) {
-    windows = await createWindow(windows)
+    windows = await createMainWindow(windows)
   }
 })
 
 ipcMain.on('showControlWindow', (evnet) => {
   windows.controlWindow.show()
+})
+
+ipcMain.on('getWindows', (event) => {
+  event.returnValue = route
+})
+
+ipcMain.on('status', (event, data) => {
+  status[data.addr] = data.value
+  sendMsg('status', status)
+})
+
+ipcMain.on('sync', (event) => {
+  event.returnValue = status
+})
+
+ipcMain.on('control', (event, data) => {
+  controls(data)
 })

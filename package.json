@@ -10,11 +10,14 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.0.20",
+    "@ffprobe-installer/ffprobe": "^1.1.0",
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
     "core-js": "^3.6.5",
     "express": "^4.17.1",
     "file-type": "^16.3.0",
+    "fluent-ffmpeg": "^2.1.2",
     "moment": "^2.29.1",
     "nedb-promises": "^4.1.1",
     "quasar": "^1.0.0",

@@ -11,6 +11,7 @@ const server = {
         tcpClient.push(socket)
       })
       socket.on('data', (data) => {
+        socket.write('ok')
         callback(data.toString())
       })
       socket.on('close', () => {
