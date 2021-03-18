@@ -3,16 +3,7 @@ import os from 'os'
 import fs from 'fs'
 import path from 'path'
 
-const thumbFolder = path.join(app.getPath('userData'), 'tmp', 'thumbnail')
-
-fs.readdir(thumbFolder, (err, files) => {
-  if (err) throw err
-  for (const file of files) {
-    fs.unlink(path.join(thumbFolder, file), err => {
-      if (err) throw err
-    })
-  }
-})
+const folder_thumbnail = path.join(app.getPath('userData'), 'tmp', 'thumbnail')
 
 let ffmpeg
 const arch = os.arch()
@@ -45,32 +36,25 @@ export const enterFullscreen = function () {
   }
 }
 
-export const genThunbnail = function () {
+export const genThunbnail = function (file, fileName, filePath = '') {
   if (status.arch === 'arm64') {
-    status.thumbnail = ''
-    return status
+    return ''
   }
-  const fileName = `${path.basename(status.file.file).split('.')[0]}.png`
-  const result = fs.existsSync(path.join(thumbFolder, fileName))
-  if (result) {
-    status.thumbnail = `${status.static}/thumbnail/${fileName}`
-    if (windows.controlWindow) {
-      windows.controlWindow.webContents.send('status', status)
-    }
-  } else {
-    ffmpeg(status.file.file)
-      .on('end', () => {
-        status.thumbnail = `${status.static}/thumbnail/${fileName}`
-        if (windows.controlWindow) {
-          windows.controlWindow.webContents.send('status', status)
-        }
-      })
-      .screenshot({
-        timestamps: ['00:00:02'],
-        filename: fileName,
-        folder: thumbFolder,
-        size: '640x360'
-      })
-  }
-  return status
+  // if (status.file && !status.file.playlist) {
+  //   status.file.thumbnail = ''
+  // }
+  ffmpeg(file)
+    .on('end', () => {
+      if (status.file && !status.file.playlist) {
+        status.file.thumbnail = `${fileName}.png`
+        sendMsg('status', status)
+      }
+      return fileName
+    })
+    .screenshot({
+      timestamps: ['00:00:02'],
+      filename: fileName,
+      folder: path.join(folder_thumbnail, filePath),
+      size: '640x360'
+    })
 }

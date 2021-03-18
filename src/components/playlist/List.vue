@@ -33,11 +33,16 @@
           :key="idx"
           :active="status.listIdx === idx"
           @click="clickList(idx)"
+          @dragover="dragover($event)"
+          @drop="drop($event, idx)"
+          @dragleave="dragleave"
           clickable
           v-ripple
         >
           <q-item-section>
-            {{ item.name }}
+            <div>
+              {{ item.name }}
+            </div>
           </q-item-section>
           <q-item-section top side>
             <q-btn
@@ -96,6 +101,19 @@ export default {
     },
     delAll () {
       this.sendControl('delAll')
+    },
+    drop (event, idx) {
+      event.preventDefault()
+      event.target.style.background = ''
+      console.log(event, idx)
+    },
+    dragover (event) {
+      event.preventDefault()
+      event.target.style.background = '#F0F8FF'
+    },
+    dragleave (event) {
+      // this.over = false
+      event.target.style.background = ''
     }
   }
 }

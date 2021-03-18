@@ -5,9 +5,10 @@
     >
       <span class="q-px-md">
         <q-img
+          ref="thumb"
           style="height: 70px; width: 122px"
           :ratio="16/9"
-          :src="status.thumbnail ? status.thumbnail : 'logo_sq.png'"
+          :src="thumbnail ? thumbnail : 'logo_sq.png'"
         />
       </span>
       <span class="text-black" v-if="status && status.file">
@@ -30,12 +31,25 @@ import path from 'path'
 export default {
   props: ['status'],
   computed: {
-    filePath: function () {
+    filePath () {
       return path.parse(this.status.file.file)
+    },
+    thumbnail () {
+      if (this.status.file && this.status.file.thumbnail) {
+        if (this.status.file.playlist) {
+          return `${this.status.url}/thumbnail/playlist/${this.status.file.thumbnail}`
+        } else {
+          return `${this.status.url}/thumbnail/${this.status.file.thumbnail}`
+        }
+      } else {
+        return ''
+      }
     }
   },
-  mounted () {
-    console.log(this.status)
+  methods: {
+    loadError () {
+      this.$refs.thumb.src = 'logo_sq.png'
+    }
   }
 }
 </script>

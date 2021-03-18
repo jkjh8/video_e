@@ -32,7 +32,7 @@ const status = {
   currListName: 'default',
 
   stream: 'http://localhost:9074/stream',
-  static: 'http://localhost:9074/static'
+  url: 'http://localhost:9074'
 }
 
 const windows = {

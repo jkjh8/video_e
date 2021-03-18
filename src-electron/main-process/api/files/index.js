@@ -2,18 +2,35 @@
 import fileType from 'file-type'
 import fs from 'fs'
 import path from 'path'
-import { dialog } from 'electron'
-import { genThunbnail, sendMsg } from '../function'
+import { v4 as uuidv4 } from 'uuid'
+import { app, dialog } from 'electron'
+import { sendMsg, genThunbnail } from '../function'
 
-async function getFileObj (file) {
+const folder_temp = path.join(app.getPath('userData'), 'tmp')
+const folder_thumbnail = path.join(app.getPath('userData'), 'tmp/thumbnail')
+const folder_thumbnail_playlist = path.join(app.getPath('userData'), 'tmp/thumbnail/playlist')
+
+!fs.existsSync(folder_temp) && fs.mkdirSync(folder_temp)
+!fs.existsSync(folder_thumbnail) && fs.mkdirSync(folder_thumbnail)
+!fs.existsSync(folder_thumbnail_playlist) && fs.mkdirSync(folder_thumbnail_playlist)
+
+async function getFileObj (file, playlist = '') {
   const type = await fileType.fromFile(file)
+  const uuid = await uuidv4()
+  let thumbnail = ''
+  if (playlist) {
+    thumbnail = `${uuid}.png`
+  }
   return {
     file: file,
     name: await path.basename(file),
     path: await path.dirname(file),
     type: type.mime,
     ext: type.ext,
-    src: `${status.stream}?file=${encodeURIComponent(file)}&type=${type.mime}`
+    src: `${status.stream}?file=${encodeURIComponent(file)}&type=${type.mime}`,
+    uuid: uuid,
+    thumbnail: thumbnail,
+    playlist: playlist
   }
 }
 
@@ -50,14 +67,16 @@ async function openFileIdx () {
   }
   status.isPlaying = false
   sendMsg('status', status)
-  genThunbnail()
   return true
 }
 
 async function sendFileObj (file) {
+  if (status.file && !status.file.playlist) {
+    await fs.unlinkSync(path.join(folder_thumbnail, `${status.file.uuid}.png`))
+  }
   status.file = await getFileObj(file)
+  await genThunbnail(status.file.file, status.file.uuid)
   windows.mainWindow.webContents.send('file', status.file)
-  genThunbnail()
   sendMsg('status', status)
   return status.file
 }
@@ -85,5 +104,12 @@ function clear () {
   return null
 }
 
-const files = { getFileObj: getFileObj, open: open, openRemote: openRemote, openFileIdx: openFileIdx, sendFileObj: sendFileObj, clear: clear }
+const files = {
+  getFileObj: getFileObj,
+  open: open,
+  openRemote: openRemote,
+  openFileIdx: openFileIdx,
+  sendFileObj: sendFileObj,
+  clear: clear
+}
 export default files

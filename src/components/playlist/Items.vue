@@ -34,7 +34,7 @@
     <q-card-section
       class="q-pa-none"
     >
-      <div @dragover="dragover" @dragleave="dragleave" @drop="drop">
+      <div ref="dragZone" @dragover="dragover" @dragleave="dragleave" @drop="drop">
         <q-list :style="over ? 'background: #F0F8FF' : ''">
           <q-item
             v-for="(item, idx) in status.items"
@@ -113,10 +113,13 @@ export default {
   methods: {
     dragover (event) {
       event.preventDefault()
-      this.over = true
+      // this.over = true
+      console.log(event.target.value)
+      this.$refs.dragZone.style.background = '#F0F8FF'
     },
     dragleave (event) {
-      this.over = false
+      // this.over = false
+      this.$refs.dragZone.style.background = ''
     },
     drop (event) {
       event.preventDefault()
@@ -136,7 +139,7 @@ export default {
           caption: fileArray.join('\n')
         })
       }
-      this.over = false
+      this.$refs.dragZone.style.background = ''
     }
   }
 }

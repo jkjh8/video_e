@@ -1,5 +1,5 @@
-import fileFunc from '../files'
-import listFunc from '../playlist'
+import ff from '../files'
+import lf from '../playlist'
 import { sendMsg, enterFullscreen } from '../function'
 
 export default async function (data) {
@@ -13,95 +13,97 @@ export default async function (data) {
     case 'open':
       status.isPlaying = false
       status.play = false
-      fileFunc.open()
+      ff.open()
       break
     case 'clear':
       status.isPlaying = false
       status.play = false
       status.thumbnail = ''
-      fileFunc.clear()
+      ff.clear()
       break
     case 'next': {
-      const result = await listFunc.next()
+      const result = await lf.next()
       if (!result) {
         sendMsg('error', {
           message: 'The file does not exist',
           caption: status.items[status.itemIdx].name
         })
-        await listFunc.next()
+        await lf.next()
       }
       break
     }
     case 'previous': {
-      const result = await listFunc.previous()
+      const result = await lf.previous()
       if (!result) {
         sendMsg('error', {
           message: 'The file does not exist',
           caption: status.items[status.itemIdx].name
         })
-        await listFunc.previous()
+        await lf.previous()
       }
       break
     }
     case 'itemIdx': {
       status.itemIdx = data.value
-      const result = await fileFunc.openFileIdx()
+      const result = await ff.openFileIdx()
+      console.log(result)
       if (!result) {
         sendMsg('error', {
           message: 'The file does not exist',
           caption: status.items[status.itemIdx].name
         })
-        await listFunc.next()
+        await lf.next()
       }
       sendMsg('status', status)
       break
     }
     case 'getItems': {
-      const items = await fileFunc.openRemote()
-      status.items = await listFunc.addListItems(items)
+      const items = await ff.openRemote()
+      status.items = await lf.addListItems(items)
       sendMsg('status', status)
       break
     }
     case 'addItems': {
-      status.items = await listFunc.addListItems(data.value)
+      status.items = await lf.addListItems(data.value)
       sendMsg('status', status)
       break
     }
     case 'delItem':
-      await listFunc.delListItem(data.value)
-      status.items = await listFunc.getListItems(status.currListName)
+      await lf.delListItem(data.value)
+      status.items = await lf.getListItems(status.currListName)
       sendMsg('status', status)
       break
     case 'delItems':
-      await listFunc.delListItems(status.currListName)
+      await lf.delListItems(status.currListName)
       status.items = []
       sendMsg('status', status)
       break
+
     case 'listIdx':
       status.listIdx = data.value
-      status.currListName = status.list[status.listIdx]
-      status.items = await listFunc.getListItems(status.currListName)
+      status.currListName = status.list[status.listIdx].name
+      status.items = await lf.getListItems(status.currListName)
       sendMsg('status', status)
       break
     case 'addList':
-      await listFunc.addList(data.value)
-      status.list = await listFunc.getList()
+      await lf.addList(data.value)
+      status.list = await lf.getList()
       sendMsg('status', status)
       break
     case 'delList':
-      await listFunc.delList(data.value)
-      status.list = await listFunc.getList()
+      await lf.delList(data.value)
+      status.list = await lf.getList()
       if (status.listIdx > status.list.length - 1) {
         status.listIdx = status.list.length - 1
-        status.currListName = status.list[status.listIdx]
-        status.items = await listFunc.getListItems(status.currListName)
+        status.currListName = status.list[status.listIdx].name
       }
+      status.items = await lf.getListItems(status.currListName)
       sendMsg('status', status)
       break
     case 'delAll':
-      await listFunc.delAll()
-      status.list = []
-      status.items = []
+      await lf.delAll()
+      status.list = await lf.getList()
+      status.items = await lf.getListItems('default')
       sendMsg('status', status)
       break
     case 'ended':
@@ -131,13 +133,13 @@ export default async function (data) {
 
 async function ended () {
   if (status.mode === 'playlist') {
-    const result = await listFunc.next()
+    const result = await lf.next()
     if (!result) {
       sendMsg('error', {
         message: 'The file does not exist',
         caption: status.items[status.itemIdx].name
       })
-      listFunc.next()
+      lf.next()
     }
   } else {
     status.play = false

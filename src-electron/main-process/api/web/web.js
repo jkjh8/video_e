@@ -7,6 +7,6 @@ const indexRouter = require('./routes')
 
 web.use('/', indexRouter)
 web.use('/', express.static(path.join(app.getPath('exe'), 'resources', 'public')))
-web.use('/static', express.static(path.join(app.getPath('userData'), 'tmp')))
+web.use('/thumbnail', express.static(path.join(app.getPath('userData'), 'tmp', 'thumbnail')))
 
 module.exports = web
