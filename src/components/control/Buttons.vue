@@ -44,7 +44,7 @@
       flat
       round
       icon="repeat_one"
-      @click="sendStatus('loop', !status.loop)"
+      @click="sendControl('loop')"
     >
       <q-tooltip>Repeat One</q-tooltip>
     </q-btn>
@@ -54,7 +54,7 @@
       round
       :color="status.loopAll ? 'orange' : ''"
       icon="repeat"
-      @click="sendStatus('loopAll', !status.loopAll)"
+      @click="sendControl('loopAll')"
     >
       <q-tooltip>Repeat All</q-tooltip>
     </q-btn>
@@ -102,13 +102,13 @@
             round
             :icon="status.mute ? 'volume_off' : 'volume_up'"
             :color="status.mute ? 'red' : ''"
-            @click="sendStatus('mute', !status.mute)"
+            @click="sendControl('mute', !status.mute)"
           />
           <q-slider
             :value="status.volume"
             :min="0"
             :max="100"
-            @input="sendStatus('volume', $event)"
+            @input="sendControl('volume', $event)"
           />
           <div class="q-ml-lg q-mr-sm">{{ volume }}%</div>
         </div>
@@ -141,17 +141,15 @@ export default {
   methods: {
     sendMode () {
       if (this.status.mode === 'playlist') {
-        this.sendStatus('mode', 'nomal')
+        this.sendControl('mode', 'nomal')
       } else {
-        this.sendStatus('mode', 'playlist')
+        this.sendControl('mode', 'playlist')
       }
     },
     play () {
       if (this.status.isPlaying) {
-        this.sendStatus('play', false)
         this.sendControl('pause')
       } else {
-        this.sendStatus('play', true)
         this.sendControl('play')
       }
     }

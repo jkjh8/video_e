@@ -1,9 +1,8 @@
 import { app, BrowserWindow } from 'electron'
 import os from 'os'
-import fs from 'fs'
 import path from 'path'
 
-const folder_thumbnail = path.join(app.getPath('userData'), 'tmp', 'thumbnail')
+const folderThumbnail = path.join(app.getPath('userData'), 'tmp', 'thumbnail')
 
 let ffmpeg
 const arch = os.arch()
@@ -13,20 +12,52 @@ if (arch !== 'arm64') {
   ffmpeg = require('fluent-ffmpeg')
   ffmpeg.setFfmpegPath(ffmpegPath)
   ffmpeg.setFfprobePath(ffprobePath)
-  console.log(ffmpegPath, ffprobePath)
 }
 
 export const sendMsg = function (addr, data) {
+  // eslint-disable-next-line no-undef
+  for (const [, win] of Object.entries(windows)) {
+    if (win) {
+      win.webContents.send(addr, data)
+    }
+  }
+}
+
+export const sendStatus = function (addr, data) {
+  // eslint-disable-next-line no-undef
+  for (const [, win] of Object.entries(windows)) {
+    if (win) {
+      win.webContents.send('status', status)
+    }
+  }
+}
+
+export const sendControl = function (addr, data) {
+  // eslint-disable-next-line no-undef
+  for (const [, win] of Object.entries(windows)) {
+    if (win) {
+      win.webContents.send('control', {
+        addr: addr,
+        value: data
+      })
+    }
+  }
+}
+
+export const sendItemError = function () {
   const wins = BrowserWindow.getAllWindows()
   wins.forEach(win => {
     if (win) {
-      win.webContents.send(addr, data)
+      win.webContents.send('error', {
+        message: 'The file does not exist',
+        caption: status.items[status.itemIdx].name
+      })
     }
   })
 }
 
-export const enterFullscreen = function () {
-  const win = BrowserWindow.fromId(1)
+export const enterFullscreen = async function () {
+  const win = windows.mainWindow
   if (win && win.isFullScreen()) {
     win.setFullScreen(false)
     return false
@@ -40,21 +71,18 @@ export const genThunbnail = function (file, fileName, filePath = '') {
   if (status.arch === 'arm64') {
     return ''
   }
-  // if (status.file && !status.file.playlist) {
-  //   status.file.thumbnail = ''
-  // }
   ffmpeg(file)
     .on('end', () => {
       if (status.file && !status.file.playlist) {
         status.file.thumbnail = `${fileName}.png`
-        sendMsg('status', status)
+        sendStatus()
       }
       return fileName
     })
     .screenshot({
       timestamps: ['00:00:02'],
       filename: fileName,
-      folder: path.join(folder_thumbnail, filePath),
+      folder: path.join(folderThumbnail, filePath),
       size: '640x360'
     })
 }

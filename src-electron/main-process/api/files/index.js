@@ -14,8 +14,15 @@ const folder_thumbnail_playlist = path.join(app.getPath('userData'), 'tmp/thumbn
 !fs.existsSync(folder_thumbnail) && fs.mkdirSync(folder_thumbnail)
 !fs.existsSync(folder_thumbnail_playlist) && fs.mkdirSync(folder_thumbnail_playlist)
 
+fs.readdirSync(folder_thumbnail, { withFileTypes: true }).forEach(file => {
+  if (!file.isDirectory()) {
+    fs.unlinkSync(path.join(folder_thumbnail, file.name))
+  }
+})
+
 async function getFileObj (file, playlist = '') {
   const type = await fileType.fromFile(file)
+  console.log(type)
   const uuid = await uuidv4()
   let thumbnail = ''
   if (playlist) {
@@ -50,15 +57,16 @@ async function open () {
   })
   if (files && files.length > 0) {
     status.isPlaying = false
+    status.play = false
+    status.mode = 'nomal'
     await sendFileObj(files[0])
-    return status
+    return files[0]
   }
 }
 
 async function openFileIdx () {
-  const result = await fs.existsSync(status.items[status.itemIdx].file)
   status.file = status.items[status.itemIdx]
-  if (!result) {
+  if (!status.file) {
     return false
   }
   windows.mainWindow.send('file', status.file)
@@ -66,18 +74,13 @@ async function openFileIdx () {
     status.play = false
   }
   status.isPlaying = false
-  sendMsg('status', status)
   return true
 }
 
 async function sendFileObj (file) {
-  if (status.file && !status.file.playlist) {
-    await fs.unlinkSync(path.join(folder_thumbnail, `${status.file.uuid}.png`))
-  }
   status.file = await getFileObj(file)
   await genThunbnail(status.file.file, status.file.uuid)
   windows.mainWindow.webContents.send('file', status.file)
-  sendMsg('status', status)
   return status.file
 }
 
@@ -99,7 +102,8 @@ async function openRemote () {
 
 function clear () {
   status.file = null
-  sendMsg('status', status)
+  status.isPlaying = false
+  status.play = false
   sendMsg('file', null)
   return null
 }

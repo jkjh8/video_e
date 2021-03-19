@@ -187,7 +187,11 @@ module.exports = function (/* ctx */) {
           to: './public'
         },
 
-        appId: 'video_e'
+        appId: 'video_e',
+        nsis: {
+          oneClick: false,
+          allowToChangeInstallationDirectory: true
+        }
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration

@@ -11,7 +11,7 @@
         </q-item-section>
         <q-list-section>
           <q-item-label class="text-h6">Player Api</q-item-label>
-          <q-item-label caption>port: 12304</q-item-label>
+          <q-item-label caption>TCP PORT: 13333</q-item-label>
         </q-list-section>
       </q-item>
       <q-item>
@@ -27,28 +27,23 @@
       </q-item>
       <q-item>
         <q-item-section>
-          Pause: pause
+          Pause: paus
         </q-item-section>
       </q-item>
       <q-item>
         <q-item-section>
-          Stop: clear
+          Stop: clea
           <q-item-label caption>clear file</q-item-label>
         </q-item-section>
       </q-item>
       <q-item>
         <q-item-section>
-          Change Playlist: cl,-id-
+          Change Playlist: list,-id-
         </q-item-section>
       </q-item>
       <q-item>
         <q-item-section>
-          Change Item: ci,-id-
-        </q-item-section>
-      </q-item>
-      <q-item>
-        <q-item-section>
-          Play Playlist: pp
+          Change Item: item,-id-
         </q-item-section>
       </q-item>
       <q-item>
@@ -58,32 +53,17 @@
       </q-item>
       <q-item>
         <q-item-section>
-          Play File: pi,-item id-
+          Loop: loop,-boolean- or loop(toggle)
         </q-item-section>
       </q-item>
       <q-item>
         <q-item-section>
-          Loop: loop,-boolean-
+          Loop All(playlist mode only): loopAll,-boolean- or loopAll(toggle)
         </q-item-section>
       </q-item>
       <q-item>
         <q-item-section>
-          Loop All(playlist mode only): loopAll,-boolean-
-        </q-item-section>
-      </q-item>
-      <q-item>
-        <q-item-section>
-          Fullscreen toggle: fs
-        </q-item-section>
-      </q-item>
-      <q-item>
-        <q-item-section>
-          Request Fullscreen: reqfs
-        </q-item-section>
-      </q-item>
-      <q-item>
-        <q-item-section>
-          Leave Fullscreen: leafs
+          Fullscreen toggle: full,-boolean- ro full(toggle)
         </q-item-section>
       </q-item>
       <q-item>
@@ -94,7 +74,7 @@
       </q-item>
       <q-item>
         <q-item-section>
-          Mute: mute,-boolean-
+          Mute: mute,-boolean- or mute(toggle)
         </q-item-section>
       </q-item>
       <q-item>

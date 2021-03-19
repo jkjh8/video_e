@@ -114,7 +114,6 @@ export default {
     dragover (event) {
       event.preventDefault()
       // this.over = true
-      console.log(event.target.value)
       this.$refs.dragZone.style.background = '#F0F8FF'
     },
     dragleave (event) {

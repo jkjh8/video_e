@@ -107,19 +107,24 @@ export default {
     },
     drop (event, idx) {
       event.preventDefault()
-      // event.target.style.background = ''
+      const files = event.dataTransfer.files
+      const fileArray = []
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].type.includes('video')) {
+          fileArray.push(files[i].path)
+        }
+      }
+      this.sendControl('addListandItems', {
+        id: idx,
+        items: fileArray
+      })
       this.$refs[idx][0].style.background = ''
-      console.log(event, idx)
     },
     dragover (event, idx) {
       event.preventDefault()
-      console.log(this.$refs[idx][0].style)
-      // event.target.style.background = '#F0F8FF'
       this.$refs[idx][0].style.background = '#F0F8FF'
     },
     dragleave (event, idx) {
-      // this.over = false
-      // event.target.style.background = ''
       this.$refs[idx][0].style.background = ''
     }
   }

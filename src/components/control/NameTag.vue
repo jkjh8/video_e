@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div
+    @dragover="dragover"
+    @drop="drop"
+    @dragleave="dragleave"
+    ref="nameTag"
+  >
     <div
       class="row no-wrap"
     >
@@ -27,8 +32,10 @@
 
 <script>
 import path from 'path'
+import { playerfunc } from '../../mixins/playerFunc'
 
 export default {
+  mixins: [playerfunc],
   props: ['status'],
   computed: {
     filePath () {
@@ -49,6 +56,26 @@ export default {
   methods: {
     loadError () {
       this.$refs.thumb.src = 'logo_sq.png'
+    },
+    drop (event) {
+      event.preventDefault()
+      const files = event.dataTransfer.files
+      console.log(files)
+      const fileArray = []
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].type.includes('video')) {
+          fileArray.push(files[i].path)
+        }
+      }
+      this.sendControl('openFile', fileArray[0])
+      this.$refs.nameTag.style.background = ''
+    },
+    dragover (event) {
+      event.preventDefault()
+      this.$refs.nameTag.style.background = '#F0F8FF'
+    },
+    dragleave (event) {
+      this.$refs.nameTag.style.background = ''
     }
   }
 }

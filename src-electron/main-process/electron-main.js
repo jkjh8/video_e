@@ -4,14 +4,25 @@ import { createMainWindow } from './api/createWindow'
 import { sendMsg } from './api/function'
 import playlistFunc from './api/playlist'
 import webServer from './api/web/web'
+import tcpServer from './api/socket'
 import controls from './api/player'
+import setup from './api/setup'
 
 require('./api/global')
 require('./api/menu')
-require('./api/tcpServer')
 
 webServer.listen(9074, () => {
   console.info('Listening on 9074')
+})
+
+tcpServer.read('13333', (data) => {
+  console.log('from tcpServer : ', data)
+  const comm = data.split(',')
+  controls({
+    addr: comm[0].toLowerCase(),
+    value: comm[1],
+    value2: comm[2]
+  })
 })
 
 try {
@@ -29,6 +40,7 @@ app.on('ready', async () => {
   windows = await createMainWindow(windows)
   status.list = await playlistFunc.getList()
   status.items = await playlistFunc.getListItems(status.currListName)
+  status.logo = await setup.getLogo()
 })
 
 app.on('window-all-closed', () => {
@@ -53,6 +65,7 @@ ipcMain.on('getWindows', (event) => {
 
 ipcMain.on('status', (event, data) => {
   status[data.addr] = data.value
+  console.log('status', status.play)
   sendMsg('status', status)
 })
 

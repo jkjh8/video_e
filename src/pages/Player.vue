@@ -82,6 +82,7 @@ export default {
 
 <style>
 .q-media {
+  pointer-events: none;
   position: relative;
   overflow: hidden;
   position: absolute;

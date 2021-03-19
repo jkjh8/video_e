@@ -6,20 +6,24 @@ let tcpServer
 const server = {
   read: (port, callback) => {
     tcpServer = net.createServer((socket) => {
-      tcpServer.on('connection', () => {
-        console.log('client connect')
-        tcpClient.push(socket)
-      })
       socket.on('data', (data) => {
-        socket.write('ok')
         callback(data.toString())
       })
       socket.on('close', () => {
+        console.log('close', socket)
         tcpClient.splice(tcpClient.indexOf(socket), 1)
       })
       socket.on('error', (err) => {
         console.log('socket error: ', JSON.stringify(err))
       })
+    })
+    tcpServer.addListener('connection', (socket) => {
+      console.log('client connect')
+      tcpClient.push(socket)
+      socket.write('connect video player')
+    })
+    tcpServer.addListener('data', (data) => {
+      callback(data.toString())
     })
     tcpServer.listen(port, () => {
       console.log(`start tcpServer on ${port}`)
