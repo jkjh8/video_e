@@ -1,5 +1,6 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, Menu } from 'electron'
 import { sendMsg } from './function'
+import setup from './setup'
 
 export const createMainWindow = function (windows) {
   windows.mainWindow = new BrowserWindow({
@@ -35,7 +36,7 @@ export const createMainWindow = function (windows) {
     windows.mainWindow.setSize(size[0], parseInt(size[0] * 9 / 16) + 52, true)
   })
 
-  windows.mainWindow.on('ready-to-show', (e) => {
+  windows.mainWindow.on('ready-to-show', async (e) => {
     route.mainWindow.id = windows.mainWindow.id
   })
 

@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { app, nativeTheme, ipcMain } from 'electron'
+import { app, nativeTheme, ipcMain, Menu } from 'electron'
 import { createMainWindow } from './api/createWindow'
 import { sendMsg } from './api/function'
 import playlistFunc from './api/playlist'
@@ -40,7 +40,6 @@ app.on('ready', async () => {
   windows = await createMainWindow(windows)
   status.list = await playlistFunc.getList()
   status.items = await playlistFunc.getListItems(status.currListName)
-  status.logo = await setup.getLogo()
 })
 
 app.on('window-all-closed', () => {
@@ -65,7 +64,6 @@ ipcMain.on('getWindows', (event) => {
 
 ipcMain.on('status', (event, data) => {
   status[data.addr] = data.value
-  console.log('status', status.play)
   sendMsg('status', status)
 })
 

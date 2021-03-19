@@ -1,9 +1,10 @@
 /* eslint-disable no-undef */
 import { app, Menu } from 'electron'
 import { createApiWindow } from './createWindow'
-import { enterFullscreen } from './function'
+import { sendStatus, enterFullscreen } from './function'
 import files from './files'
 import controls from './player'
+import setup from './setup'
 
 Menu.setApplicationMenu(
   Menu.buildFromTemplate([
@@ -105,14 +106,24 @@ Menu.setApplicationMenu(
         },
         { type: 'separator' },
         {
-          label: 'Logo',
+          label: 'Show Logo',
           type: 'checkbox',
+          // checked: status.logo,
           click () {
             if (status.logo) {
-              controls({ addr: 'mode', value: 'nomal' })
+              setup.setLogo(false)
             } else {
-              controls({ addr: 'mode', value: 'playlist' })
+              setup.setLogo(true)
             }
+            sendStatus()
+          },
+        },
+        {
+          label: 'Background White',
+          type: 'checkbox',
+          async click () {
+            status.background = await setup.setBgColor()
+            sendStatus()
           }
         }
       ]

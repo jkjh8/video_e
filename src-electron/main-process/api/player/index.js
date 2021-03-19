@@ -17,7 +17,7 @@ export default async function (data) {
           menu.items[1].submenu.items[0].checked = true
         } else {
           const menu = Menu.getApplicationMenu()
-          menu.items[1].submenu.items[0].checked = true
+          menu.items[1].submenu.items[0].checked = false
         }
         rtMsg = `mode,${data.value}`
       }

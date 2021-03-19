@@ -1,3 +1,7 @@
+import setup from './setup'
+import { Menu } from 'electron'
+import { sendStatus } from './function'
+
 const status = {
   arch: '',
 
@@ -19,7 +23,7 @@ const status = {
   fullscreen: false,
   file: null,
   thumbnail: '',
-  logo: true,
+  logo: false,
 
   duration: 0,
   time: 0,
@@ -34,6 +38,15 @@ const status = {
   stream: 'http://localhost:9074/stream',
   url: 'http://localhost:9074'
 }
+
+setTimeout(async () => {
+  status.logo = await setup.getLogo()
+  status.background = await setup.getBgColor()
+  sendStatus()
+  Menu.getApplicationMenu().items[1].submenu.items[11].checked = status.logo
+  if (status.background === 'white')
+  Menu.getApplicationMenu().items[1].submenu.items[12].checked = true
+}, 1000)
 
 const windows = {
   mainWindow: null,
