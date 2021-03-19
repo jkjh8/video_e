@@ -43,7 +43,9 @@ async function addListItem (item, playlist = status.currListName) {
   try {
     const itemObj = await ff.getFileObj(item, playlist)
     const result = await db.items.insert(itemObj)
-    await genThunbnail(result.file, result.uuid, 'playlist')
+    if (status.arch !== 'arm64') {
+      await genThunbnail(result.file, result.uuid, 'playlist')
+    }
   } catch (err) {
     console.log('addListItem', err)
   }

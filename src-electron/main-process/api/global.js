@@ -1,9 +1,10 @@
 import setup from './setup'
+import os from 'os'
 import { Menu } from 'electron'
 import { sendStatus } from './function'
 
 const status = {
-  arch: '',
+  arch: os.arch(),
 
   type: 'video',
   spinner: false,

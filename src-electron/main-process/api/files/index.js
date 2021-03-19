@@ -22,10 +22,9 @@ fs.readdirSync(folder_thumbnail, { withFileTypes: true }).forEach(file => {
 
 async function getFileObj (file, playlist = '') {
   const type = await fileType.fromFile(file)
-  console.log(type)
   const uuid = await uuidv4()
   let thumbnail = ''
-  if (playlist) {
+  if (playlist && status.arch !== 'arm64') {
     thumbnail = `${uuid}.png`
   }
   return {
