@@ -7,6 +7,7 @@ import { Menu } from 'electron'
 import { sendMsg, sendItemError, sendStatus, sendControl } from '../function'
 
 export default async function (data) {
+  /* global windows */
   let rtMsg
   switch (data.addr) {
     case 'mode':
@@ -64,6 +65,12 @@ export default async function (data) {
       rtMsg = `full,${value}`
       break
     }
+    case 'minimize':
+    case 'mini':
+      windows.mainWindow.minimize()
+      rtMsg = 'flip'
+      break
+
     case 'flip':
       windows.mainWindow.show()
       rtMsg = 'flip'

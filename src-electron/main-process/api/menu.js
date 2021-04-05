@@ -50,6 +50,16 @@ Menu.setApplicationMenu(
           accelerator: 'F11',
           click () { enterFullscreen() }
         },
+        {
+          label: 'Minimize Window',
+          accelerator: 'F12',
+          click () { windows.mainWindow.minimize() }
+        },
+        {
+          label: 'Show Window',
+          accelerator: 'CommandOrControl+f',
+          click () { controls({ addr: 'flip' }) }
+        },
         { type: 'separator' },
         {
           label: 'Play/Pause',
@@ -116,7 +126,7 @@ Menu.setApplicationMenu(
               setup.setLogo(true)
             }
             sendStatus()
-          },
+          }
         },
         {
           label: 'Background White',

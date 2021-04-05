@@ -58,6 +58,16 @@
     >
       <q-tooltip>Repeat All</q-tooltip>
     </q-btn>
+
+    <q-btn
+      flat
+      round
+      icon="minimize"
+      @click="sendControl('minimize')"
+    >
+      <q-tooltip>Window Minimize</q-tooltip>
+    </q-btn>
+
     <q-btn
       flat
       round
