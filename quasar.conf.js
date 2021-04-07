@@ -182,10 +182,10 @@ module.exports = function (/* ctx */) {
 
       builder: {
         // https://www.electron.build/configuration/configuration
-        extraResources: {
-          from: './public',
-          to: './public'
-        },
+        // extraResources: {
+        //   from: './public',
+        //   to: './public'
+        // },
 
         appId: 'video_e',
         nsis: {
