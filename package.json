@@ -1,8 +1,8 @@
 {
-  "name": "video_e_beta_1",
-  "version": "0.0.2",
+  "name": "videoplayer",
+  "version": "1.0.0",
   "description": "VideoPlayer with Control",
-  "productName": "video_e_bata",
+  "productName": "video_player",
   "author": "jkjh8 <jkjh82@naver.com>",
   "private": true,
   "scripts": {
