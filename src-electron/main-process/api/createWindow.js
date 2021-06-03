@@ -4,8 +4,8 @@ import setup from './setup'
 
 export const createMainWindow = function (windows) {
   windows.mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 600,
+    width: 1280,
+    height: 740,
     useContentSize: true,
     webPreferences: {
       nodeIntegration: true,

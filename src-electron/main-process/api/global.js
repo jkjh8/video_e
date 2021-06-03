@@ -43,10 +43,16 @@ const status = {
 setTimeout(async () => {
   status.logo = await setup.getLogo()
   status.background = await setup.getBgColor()
+  status.fullscreenStart = await setup.getFullscreenStart()
+  if (status.fullscreenStart) {
+    status.fullscreen = true
+  }
   sendStatus()
-  Menu.getApplicationMenu().items[1].submenu.items[11].checked = status.logo
-  if (status.background === 'white')
-  Menu.getApplicationMenu().items[1].submenu.items[12].checked = true
+  Menu.getApplicationMenu().items[1].submenu.items[13].checked = status.fullscreenStart
+  Menu.getApplicationMenu().items[1].submenu.items[14].checked = status.logo
+  if (status.background === 'white') {
+    Menu.getApplicationMenu().items[1].submenu.items[15].checked = true
+  }
 }, 1000)
 
 const windows = {

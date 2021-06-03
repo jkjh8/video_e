@@ -116,6 +116,18 @@ Menu.setApplicationMenu(
         },
         { type: 'separator' },
         {
+          label: 'Fullscreen Start',
+          type: 'checkbox',
+          click () {
+            if (status.fullscreenStart) {
+              setup.setFullscreenStart(false)
+            } else {
+              setup.setFullscreenStart(true)
+            }
+            sendStatus()
+          }
+        },
+        {
           label: 'Show Logo',
           type: 'checkbox',
           // checked: status.logo,

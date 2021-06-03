@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import { app, nativeTheme, ipcMain, Menu } from 'electron'
 import { createMainWindow } from './api/createWindow'
-import { sendMsg } from './api/function'
+import { sendMsg, enterFullscreen } from './api/function'
 import playlistFunc from './api/playlist'
 import webServer from './api/web/web'
 import tcpServer from './api/socket'
@@ -37,9 +37,14 @@ if (process.env.PROD) {
 
 app.on('ready', async () => {
   // eslint-disable-next-line no-undef
-  windows = await createMainWindow(windows)
   status.list = await playlistFunc.getList()
   status.items = await playlistFunc.getListItems(status.currListName)
+  windows = await createMainWindow(windows)
+  status.fullscreenStart = await setup.getFullscreenStart()
+  if (status.fullscreenStart) {
+    enterFullscreen()
+    windows.mainWindow.show()
+  }
 })
 
 app.on('window-all-closed', () => {

@@ -11,6 +11,14 @@ export default {
     const result = await db.setup.findOne({ menu: 'logo' })
     return result.value
   },
+  setFullscreenStart: async function (value) {
+    await db.setup.update({ menu: 'fullscreenStart' }, { $set: { value: value } }, { upsert: true })
+    return status.fullscreenStart
+  },
+  getFullscreenStart: async function () {
+    const r = await db.setup.findOne({ menu: 'fullscreenStart' })
+    return r.value
+  },
   setBgColor: async function () {
     if (status.background === 'black') {
       await db.setup.update({ menu: 'background' }, { $set: { value: 'white' } }, { upsert: true })
@@ -23,5 +31,9 @@ export default {
   getBgColor: async function () {
     const result = await db.setup.findOne({ menu: 'background' })
     return result.value
+  },
+  getBgColorDefalut: async function () {
+    const result = await db.setup.findOne({ menu: 'background' })
+    return result.value ? 'white' : 'black'
   }
 }
