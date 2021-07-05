@@ -44,8 +44,16 @@ async function open () {
   const files = await dialog.showOpenDialogSync({
     filters: [
       {
+        name: 'Video & Audio',
+        extensions: ['mp4', 'mov', 'avi', 'webm', 'mkv', 'wav', 'mp3']
+      },
+      {
         name: 'Video',
         extensions: ['mp4', 'mov', 'avi', 'webm', 'mkv']
+      },
+      {
+        name: 'Audio',
+        extensions: ['wav', 'mp3']
       },
       {
         name: 'All Files',
@@ -87,8 +95,16 @@ async function openRemote () {
   return await dialog.showOpenDialogSync({
     filters: [
       {
+        name: 'Video & Audio',
+        extensions: ['mp4', 'mov', 'avi', 'webm', 'mkv', 'wav', 'mp3']
+      },
+      {
         name: 'Video',
-        extensions: ['mp4', 'avi', 'webm', 'mkv', 'MKV']
+        extensions: ['mp4', 'mov', 'avi', 'webm', 'mkv']
+      },
+      {
+        name: 'Audio',
+        extensions: ['wav', 'mp3']
       },
       {
         name: 'All Files',

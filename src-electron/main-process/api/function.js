@@ -68,21 +68,24 @@ export const enterFullscreen = async function () {
 }
 
 export const genThunbnail = function (file, fileName, filePath = '') {
+  const ext = path.extname(file)
   if (status.arch === 'arm64') {
     return ''
   }
-  ffmpeg(file)
-    .on('end', () => {
-      if (status.file && !status.file.playlist) {
-        status.file.thumbnail = `${fileName}.png`
-        sendStatus()
-      }
-      return fileName
-    })
-    .screenshot({
-      timestamps: ['00:00:02'],
-      filename: fileName,
-      folder: path.join(folderThumbnail, filePath),
-      size: '640x360'
-    })
+  if (ext === 'mp4' || ext === 'mov' || ext === 'avi' || ext === 'webm' || ext === 'mkv') {
+    ffmpeg(file)
+      .on('end', () => {
+        if (status.file && !status.file.playlist) {
+          status.file.thumbnail = `${fileName}.png`
+          sendStatus()
+        }
+        return fileName
+      })
+      .screenshot({
+        timestamps: ['00:00:02'],
+        filename: fileName,
+        folder: path.join(folderThumbnail, filePath),
+        size: '640x360'
+      })
+  }
 }

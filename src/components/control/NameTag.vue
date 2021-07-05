@@ -42,6 +42,12 @@ export default {
       return path.parse(this.status.file.file)
     },
     thumbnail () {
+      if (this.status.file.ext === 'mp3') {
+        return ''
+      }
+      if (this.status.file.ext === 'wav') {
+        return ''
+      }
       if (this.status.file && this.status.file.thumbnail) {
         if (this.status.file.playlist) {
           return `${this.status.url}/thumbnail/playlist/${this.status.file.thumbnail}`

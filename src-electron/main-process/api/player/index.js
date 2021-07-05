@@ -113,6 +113,9 @@ export default async function (data) {
 
     case 'clea':
     case 'clear':
+    case 'stop':
+    case 'STOP':
+    case 'Stop':
       ff.clear()
       status.autoplay = false
       rtMsg = 'clea'
