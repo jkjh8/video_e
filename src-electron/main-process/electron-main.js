@@ -34,6 +34,7 @@ try {
 if (process.env.PROD) {
   global.__statics = __dirname
 }
+app.commandLine.appendSwitch('ignore-certificate-errors', 'true')
 
 app.on('ready', async () => {
   // eslint-disable-next-line no-undef

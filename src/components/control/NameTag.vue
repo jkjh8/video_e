@@ -42,10 +42,10 @@ export default {
       return path.parse(this.status.file.file)
     },
     thumbnail () {
-      if (this.status.file.ext === 'mp3') {
+      if (this.status.file && this.status.file.ext === 'mp3') {
         return ''
       }
-      if (this.status.file.ext === 'wav') {
+      if (this.status.file && this.status.file.ext === 'wav') {
         return ''
       }
       if (this.status.file && this.status.file.thumbnail) {
