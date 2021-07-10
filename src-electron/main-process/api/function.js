@@ -72,7 +72,7 @@ export const genThunbnail = function (file, fileName, filePath = '') {
   if (status.arch === 'arm64') {
     return ''
   }
-  if (ext === '.mp4' || ext === '.mov' || ext === '.avi' || ext === '.webm' || ext === '.mkv') {
+  if (ext === '.mp4' || ext === '.m4v' || ext === '.mov' || ext === '.avi' || ext === '.webm' || ext === '.mkv') {
     ffmpeg(file)
       .on('end', () => {
         if (status.file && !status.file.playlist) {

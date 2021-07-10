@@ -45,11 +45,11 @@ async function open () {
     filters: [
       {
         name: 'Video & Audio',
-        extensions: ['mp4', 'mov', 'avi', 'webm', 'mkv', 'wav', 'mp3']
+        extensions: ['mp4', 'm4v', 'mov', 'avi', 'webm', 'mkv', 'wav', 'mp3']
       },
       {
         name: 'Video',
-        extensions: ['mp4', 'mov', 'avi', 'webm', 'mkv']
+        extensions: ['mp4', 'm4v', 'mov', 'avi', 'webm', 'mkv']
       },
       {
         name: 'Audio',
@@ -96,11 +96,11 @@ async function openRemote () {
     filters: [
       {
         name: 'Video & Audio',
-        extensions: ['mp4', 'mov', 'avi', 'webm', 'mkv', 'wav', 'mp3']
+        extensions: ['mp4', 'm4v', 'mov', 'avi', 'webm', 'mkv', 'wav', 'mp3']
       },
       {
         name: 'Video',
-        extensions: ['mp4', 'mov', 'avi', 'webm', 'mkv']
+        extensions: ['mp4', 'm4v', 'mov', 'avi', 'webm', 'mkv']
       },
       {
         name: 'Audio',
