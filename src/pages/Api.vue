@@ -27,12 +27,24 @@
       </q-item>
       <q-item>
         <q-item-section>
+          Play List ID: pl,-id-
+          <q-item-label caption>pl,-id(int)-</q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item>
+        <q-item-section>
           Pause: paus
         </q-item-section>
       </q-item>
       <q-item>
         <q-item-section>
           Stop: clea
+          <q-item-label caption>clear file</q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item>
+        <q-item-section>
+          Stop: stop
           <q-item-label caption>clear file</q-item-label>
         </q-item-section>
       </q-item>
