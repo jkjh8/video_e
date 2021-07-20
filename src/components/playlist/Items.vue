@@ -44,7 +44,7 @@
             clickable
           >
             <q-item-section top>
-              <div>{{ item.name }}</div>
+              <div>{{idx + 1}}. {{ item.name }}</div>
               <div
                 class="text-caption text-blue-grey"
               >

@@ -143,7 +143,17 @@ export default async function (data) {
       rtMsg = `prev,${status.itemIdx}`
       break
     }
-
+    case 'pl': {
+      status.autoplay = true
+      status.itemIdx = Number(data.value)
+      const result = await ff.openFileIdx()
+      if (!result) {
+        sendItemError()
+        await lf.next()
+      }
+      rtMsg = `pl,${status.itemIdx}`
+      break
+    }
     case 'item':
     case 'itemIdx': {
       status.itemIdx = Number(data.value)
@@ -242,6 +252,7 @@ async function ready () {
 
 async function ended () {
   if (status.mode === 'playlist') {
+    // status.autoplay = false
     const result = await lf.next()
     if (!result) {
       sendItemError()
@@ -250,6 +261,7 @@ async function ended () {
   } else {
     status.play = false
     status.isPlaying = false
+    // status.autoplay = false
     sendMsg('status', status)
   }
 }

@@ -69,6 +69,7 @@ export const enterFullscreen = async function () {
 
 export const genThunbnail = function (file, fileName, filePath = '') {
   const ext = path.extname(file)
+  console.log(ext)
   if (status.arch === 'arm64') {
     return ''
   }
