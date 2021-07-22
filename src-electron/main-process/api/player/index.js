@@ -43,6 +43,7 @@ export default async function (data) {
           return err
         }
       }
+      rtMsg = `playfile,${data.value}`
       break
     }
     case 'pause':
@@ -68,7 +69,7 @@ export default async function (data) {
     case 'minimize':
     case 'mini':
       windows.mainWindow.minimize()
-      rtMsg = 'flip'
+      rtMsg = 'mini'
       break
 
     case 'flip':
@@ -82,6 +83,7 @@ export default async function (data) {
       } else {
         status.loop = !status.loop
       }
+      rtMsg = `loop,${status.loop}`
       break
 
     case 'loopAll':
@@ -91,6 +93,7 @@ export default async function (data) {
       } else {
         status.loopAll = !status.loopAll
       }
+      rtMsg = `alop,${status.loopAll}`
       break
 
     case 'mute':
@@ -99,11 +102,13 @@ export default async function (data) {
       } else {
         status.mute = !status.mute
       }
+      rtMsg = `mute,${status.mute}`
       break
 
     case 'volume':
     case 'volu':
       status.volume = data.value
+      rtMsg = `volu,${data.value}`
       break
 
     case 'open': {
@@ -229,6 +234,7 @@ export default async function (data) {
   }
   sendStatus()
   if (rtMsg) {
+    rtMsg.toLowerCase()
     tcpServer.send(rtMsg)
     return rtMsg
   }
