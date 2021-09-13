@@ -96,7 +96,11 @@ export default {
   },
   async mounted () {
     const r = await this.getLicense()
-    this.keyStatus = !r.value
+    if (r.value) {
+      this.keyStatus = false
+    } else {
+      this.keyStatus = true
+    }
   },
   methods: {
     createClock () {
