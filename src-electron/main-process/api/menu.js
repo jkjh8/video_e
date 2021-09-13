@@ -24,6 +24,16 @@ Menu.setApplicationMenu(
           click () { windows.controlWindow.show() }
         },
         {
+          label: 'Copy',
+          accelerator: 'CmdOrCtrl+C',
+          selector: 'copy:'
+        },
+        {
+          label: 'Paste',
+          accelerator: 'CmdOrCtrl+V',
+          selector: 'paste:'
+        },
+        {
           label: 'Exit',
           accelerator: 'CommandOrControl+F4',
           click () { app.quit() }

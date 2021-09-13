@@ -68,6 +68,20 @@ ipcMain.on('getWindows', (event) => {
   event.returnValue = route
 })
 
+ipcMain.on('license', async (event) => {
+  const r = await setup.getLicense()
+  console.log('license data = ', r)
+  event.returnValue = r
+})
+
+ipcMain.on('quit', (e) => {
+  app.quit()
+})
+
+ipcMain.on('setup', (event, data) => {
+  setup.setLicense(data.value)
+})
+
 ipcMain.on('status', (event, data) => {
   status[data.addr] = data.value
   sendMsg('status', status)

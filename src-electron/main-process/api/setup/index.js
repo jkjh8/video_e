@@ -35,5 +35,11 @@ export default {
   getBgColorDefalut: async function () {
     const result = await db.setup.findOne({ menu: 'background' })
     return result.value ? 'white' : 'black'
+  },
+  setLicense: async function (value) {
+    await db.setup.update({ menu: 'license' }, { $set: { value: value } }, { upsert: true })
+  },
+  getLicense: async function () {
+    return await db.setup.findOne({ menu: 'license' })
   }
 }

@@ -41,33 +41,36 @@ async function getFileObj (file, playlist = '') {
 }
 
 async function open () {
-  const files = await dialog.showOpenDialogSync({
-    filters: [
-      {
-        name: 'Video & Audio',
-        extensions: ['mp4', 'm4v', 'mov', 'avi', 'webm', 'mkv', 'wav', 'mp3']
-      },
-      {
-        name: 'Video',
-        extensions: ['mp4', 'm4v', 'mov', 'avi', 'webm', 'mkv']
-      },
-      {
-        name: 'Audio',
-        extensions: ['wav', 'mp3']
-      },
-      {
-        name: 'All Files',
-        extensions: ['*']
-      }
-    ],
-    properties: ['openFile']
-  })
-  if (files && files.length > 0) {
-    status.isPlaying = false
-    status.play = false
-    status.mode = 'nomal'
-    await sendFileObj(files[0])
-    return files[0]
+  if (status.license) {
+    console.log(status.license)
+    const files = await dialog.showOpenDialogSync({
+      filters: [
+        {
+          name: 'Video & Audio',
+          extensions: ['mp4', 'm4v', 'mov', 'avi', 'webm', 'mkv', 'wav', 'mp3']
+        },
+        {
+          name: 'Video',
+          extensions: ['mp4', 'm4v', 'mov', 'avi', 'webm', 'mkv']
+        },
+        {
+          name: 'Audio',
+          extensions: ['wav', 'mp3']
+        },
+        {
+          name: 'All Files',
+          extensions: ['*']
+        }
+      ],
+      properties: ['openFile']
+    })
+    if (files && files.length > 0) {
+      status.isPlaying = false
+      status.play = false
+      status.mode = 'nomal'
+      await sendFileObj(files[0])
+      return files[0]
+    }
   }
 }
 

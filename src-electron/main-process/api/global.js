@@ -5,6 +5,7 @@ import { sendStatus } from './function'
 
 const status = {
   arch: os.arch(),
+  license: null,
 
   type: 'video',
   spinner: false,
@@ -41,6 +42,7 @@ const status = {
 }
 
 setTimeout(async () => {
+  status.license = await setup.getLicense().value
   status.logo = await setup.getLogo()
   status.background = await setup.getBgColor()
   status.fullscreenStart = await setup.getFullscreenStart()
