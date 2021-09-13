@@ -96,7 +96,7 @@ export default {
   },
   async mounted () {
     const r = await this.getLicense()
-    if (r.value) {
+    if (r && r.value) {
       this.keyStatus = false
     } else {
       this.keyStatus = true
