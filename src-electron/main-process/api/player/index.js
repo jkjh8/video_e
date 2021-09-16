@@ -3,6 +3,7 @@ import ff from '../files'
 import lf from '../playlist'
 import tcpServer from '../socket'
 import { Menu } from 'electron'
+import * as shutdown from 'electron-shutdown-command'
 
 import { sendMsg, sendItemError, sendStatus, sendControl } from '../function'
 
@@ -10,8 +11,14 @@ export default async function (data) {
   /* global windows */
   let rtMsg
   switch (data.addr) {
+    case 'reboot':
+      shutdown.reboot()
+      break
+    case 'shutdown':
+      shutdown.shutdown()
+      break
     case 'mode':
-      if (data.value === 'playlist' || data.value === 'nomal') {
+      if (data.value === 'playlist' || data.value === 'normal') {
         status.mode = data.value
         if (status.mode === 'playlist') {
           const menu = Menu.getApplicationMenu()

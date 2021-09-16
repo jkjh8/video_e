@@ -17,7 +17,7 @@
       <q-item>
         <q-item-section>
           Mode: mode,-mode-
-          <q-item-label caption>nomal or playlist</q-item-label>
+          <q-item-label caption>normal or playlist</q-item-label>
         </q-item-section>
       </q-item>
       <q-item>
@@ -105,6 +105,18 @@
         <q-item-section>
           Previous: previous
           <q-item-label caption>previous item in playlist</q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item>
+        <q-item-section>
+          Reboot: reboot
+          <q-item-label caption>reboot device</q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item>
+        <q-item-section>
+          Shutdown: shutdown
+          <q-item-label caption>shutdown device</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
