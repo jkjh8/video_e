@@ -79,6 +79,7 @@ ipcMain.on('quit', (e) => {
 })
 
 ipcMain.on('setup', (event, data) => {
+  console.log()
   setup.setLicense(data.value)
 })
 

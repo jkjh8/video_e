@@ -16,6 +16,7 @@
     "axios": "^0.18.1",
     "core-js": "^3.6.5",
     "crypto-js": "^4.1.1",
+    "electron-shutdown-command": "^2.0.1",
     "express": "^4.17.1",
     "file-type": "^16.3.0",
     "fluent-ffmpeg": "^2.1.2",

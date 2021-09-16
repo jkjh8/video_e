@@ -5,6 +5,7 @@ import { sendStatus, enterFullscreen } from './function'
 import files from './files'
 import controls from './player'
 import setup from './setup'
+import * as shutdown from 'electron-shutdown-command'
 
 Menu.setApplicationMenu(
   Menu.buildFromTemplate([
@@ -32,6 +33,16 @@ Menu.setApplicationMenu(
           label: 'Paste',
           accelerator: 'CmdOrCtrl+V',
           selector: 'paste:'
+        },
+        {
+          label: 'Reboot',
+          accelerator: 'CmdOrCtrl+Alt+F3',
+          click () { shutdown.reboot() }
+        },
+        {
+          label: 'Shutdown',
+          accelerator: 'CmdOrCtrl+Alt+F4',
+          click () { shutdown.shutdown() }
         },
         {
           label: 'Exit',

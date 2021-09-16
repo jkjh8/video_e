@@ -3875,6 +3875,11 @@ electron-publish@22.10.5:
     lazy-val "^1.0.4"
     mime "^2.5.0"
 
+electron-shutdown-command@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/electron-shutdown-command/-/electron-shutdown-command-2.0.1.tgz#915ecce0902c9132d477c7b4a36926fecd8c4e6b"
+  integrity sha512-u8fpVGBpKGv0u7c7uAodUWzjF37+FbOeWBxr3vNO/DKt3KISFT48/UIfu/7smTHluCwrWvjwUXLkrZTA8pWPtg==
+
 electron-to-chromium@^1.3.649:
   version "1.3.687"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.687.tgz#c336184b7ab70427ffe2ee79eaeaedbc1ad8c374"
