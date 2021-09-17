@@ -66,7 +66,7 @@
 
 <script>
 import moment from 'moment'
-// import { ipcRenderer } from 'electron'
+import { ipcRenderer } from 'electron'
 import { playerfunc } from '../mixins/playerFunc'
 import List from '../components/playlist/List'
 import Items from '../components/playlist/Items'
@@ -113,9 +113,9 @@ export default {
       console.log('start check license')
       const result = await this.checkKey(this.key)
       this.sendSetup('license', result)
-      // setTimeout(() => {
-      //   ipcRenderer.send('quit')
-      // }, 1000)
+      setTimeout(() => {
+        ipcRenderer.send('quit')
+      }, 1000)
     },
     paste (e) {
       const clipboardData = e.clipboardData || window.clipboardData
