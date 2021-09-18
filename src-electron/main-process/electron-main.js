@@ -78,9 +78,9 @@ ipcMain.on('quit', (e) => {
   app.quit()
 })
 
-ipcMain.on('setup', (event, data) => {
-  console.log()
-  setup.setLicense(data.value)
+ipcMain.on('setup', async (event, data) => {
+  console.log(data)
+  await setup.setLicense(data.value)
 })
 
 ipcMain.on('status', (event, data) => {

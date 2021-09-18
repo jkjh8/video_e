@@ -7,7 +7,7 @@ export const playerfunc = {
     sendControl (addr, data) {
       ipcRenderer.send('control', { addr: addr, value: data })
     },
-    sendSetup (addr, data) {
+    async sendSetup (addr, data) {
       ipcRenderer.send('setup', { addr: addr, value: data })
     },
     async getLicense () {
@@ -58,7 +58,7 @@ export const playerfunc = {
       })
     },
     checkKey (key) {
-      const reference = moment().format('YYYY/DD')
+      const reference = moment().format('YYYY/MM')
       const refKey = Crypto.AES.encrypt(reference, 'password').toString()
       const compair = Crypto.AES.decrypt(key, 'password').toString(Crypto.enc.Utf8)
       console.log({ reference, refKey, compair })

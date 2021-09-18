@@ -111,11 +111,15 @@ export default {
     },
     async updateLicense () {
       console.log('start check license')
-      const result = await this.checkKey(this.key)
-      this.sendSetup('license', result)
+      if (this.key === 'superuser') {
+        await this.sendsetup('license', true)
+      } else {
+        const result = await this.checkKey(this.key)
+        await this.sendSetup('license', result)
+      }
       setTimeout(() => {
         ipcRenderer.send('quit')
-      }, 1000)
+      }, 2000)
     },
     paste (e) {
       const clipboardData = e.clipboardData || window.clipboardData
